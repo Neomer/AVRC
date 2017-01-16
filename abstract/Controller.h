@@ -12,9 +12,9 @@ public:
 		Write = 1
 	};
 	
-	void setPinDirection(avr_mem_t port, avr_int8_t pin, PortDirection direction)
+	void setPinDirection(avr_bit_s bit, PortDirection direction)
 	{
-		writeBit(port, pin, direction);
+		writeBit(bit._offset, bit._bit, direction);
 	}
 
 	template<typename T>
@@ -51,6 +51,13 @@ public:
 		return (((*link) & (1 << bit)) >> bit);
 	}
 	
+	avr_bit_t readBit(avr_bit_s &bit)
+	{
+		avr_int8_t * link = (avr_int8_t *) bit._offset;
+
+		return (((*link) & (1 << bit._bit)) >> bit._bit);
+	}
+	
 	avr_bit_t maskBit(avr_mem_t address, avr_uint8_t mask)
 	{
 		avr_int8_t * link = (avr_int8_t *) address;
@@ -78,12 +85,23 @@ public:
 		return (*link) & (1 << bit) != 0;
 	}
 		
-	avr_int8_t * link(avr_mem_t address)
+	avr_uint8_t * link(avr_mem_t address)
 	{
 		return (avr_uint8_t *) address;
 	}
 	
+	avr_int32_t exec()
+	{
+		while (1) 
+		{
+			update();
+		}
+	}
+	
 	virtual void initPWM(avr_uint8_t pwm_num) = 0;
+	
+protected:
+	virtual void update();
 	
 	
 private:

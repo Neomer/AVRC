@@ -10,8 +10,10 @@ DISTFILES += \
     compile.sh
 
 HEADERS += \
-    Controller.h \
-    avr_types.h \
+    abstract/Controller.h \
+    abstract/avr_types.h \
     dev/m8/ControllerM8.h \
-    dev/m8/MemoryM8.h
+    dev/m8/MemoryM8.h \
+    abstract/Sensor.h \
+    sensors/ButtonPullUp.h
 
