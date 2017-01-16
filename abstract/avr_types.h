@@ -16,6 +16,9 @@ typedef short		avr_int16_t;
 typedef int			avr_int32_t;
 typedef long long	avr_int64_t;
 
+typedef float		avr_float32_t;
+typedef double		avr_float64_t;
+
 typedef class AVR_BIT 
 { 
 public:

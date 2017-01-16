@@ -51,6 +51,10 @@
 #define iDDRB	(0x37)
 #define iPORTB	(0x38)
 
+#define iPB		0x36
+#define iPC		0x33
+#define iPD		0x30
+
 /* EEPROM Control Register */
 #define iEECR	(0x3C)
 

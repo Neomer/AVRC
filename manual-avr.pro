@@ -20,5 +20,6 @@ HEADERS += \
     abstract/Object.h \
     actors/LED.h \
     abstract/Actor.h \
-    sensors/ButtonHiZ.h
+    sensors/ButtonHiZ.h \
+    sensors/Potentiometer.h
 
