@@ -4,7 +4,7 @@
 #include "avr_types.h"
 #include "Controller.h"
 
-class IDigitalSensor
+class IDigitalSensor: public IObject
 {
 public:
 	IDigitalSensor(avr_bit_s pin, IController *controller)
@@ -12,6 +12,7 @@ public:
 		_pin = pin;
 		_controller = controller;
 		_controller->setPinDirection(pin, IController::Read);
+		_controller->registerObject(this);
 	}
 	
 	avr_bit_t state()
@@ -20,8 +21,6 @@ public:
 	}
 	
 protected:
-	virtual void update() = 0;
-
 	avr_bit_s _pin;
 	IController *_controller;
 };

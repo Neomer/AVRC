@@ -36,5 +36,49 @@ public:
 	avr_uint8_t _bit; 
 } avr_bit_s;
 
+#define AVRC_ARRAY_MAX_LENGTH	50
+
+
+ 
+template <typename T>
+class avr_array_s
+{
+public:
+	avr_array_s() : 
+		_cnt(0)
+	{
+	}
+	
+	void append(T &item)
+	{
+		if (_cnt < AVRC_ARRAY_MAX_LENGTH)
+		{
+			_el[_cnt++] = item;
+		}
+	}
+	
+	avr_uint8_t count()
+	{
+		return _cnt;
+	}
+	
+	const T at(avr_uint8_t index)
+	{
+#ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
+		if ((index >= 0) && (index < _cnt))
+		{
+			return _el[index];
+		}
+#else
+		return _el[index];
+#endif
+	}
+
+private:
+	avr_uint8_t _cnt;
+	T _el[AVRC_ARRAY_MAX_LENGTH];	
+} ;
+
+
 #endif // AVR_TYPES
 

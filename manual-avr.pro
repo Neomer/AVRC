@@ -1,10 +1,11 @@
 QT = 
 
-INCLUDEPATH += /usr/lib/avr/include
+INCLUDEPATH += /usr/lib/avr/include \
+	       "C:/Program Files (x86)/Atmel/Studio/7.0/packs/atmel/ATmega_DFP/1.1.130/include"
 
 SOURCES += main.cpp 
 
-#DEFINES += __AVR_ATmega8__
+DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__
 
 DISTFILES += \
     compile.sh
@@ -15,5 +16,8 @@ HEADERS += \
     dev/m8/ControllerM8.h \
     dev/m8/MemoryM8.h \
     abstract/Sensor.h \
-    sensors/ButtonPullUp.h
+    sensors/ButtonPullUp.h \
+    abstract/Object.h \
+    actors/LED.h \
+    abstract/Actor.h
 
