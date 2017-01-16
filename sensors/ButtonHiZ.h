@@ -1,36 +1,36 @@
-#ifndef BUTTONPULLUP
-#define BUTTONPULLUP
+#ifndef BUTTONHIZ_H
+#define BUTTONHIZ_H
 
 /*************************************************** 
- * ButtonPullUp.h
+ * ButtonHiZ.h
  * 
- * Класс для работы с кнопкой замыкающей на землю
+ * Класс для работы с кнопкой замыкающей на питание
  ***************************************************/
 
 #include "../abstract/Sensor.h"
 
-class ButtonPullUp : public IDigitalSensor
+class ButtonHiZ : public IDigitalSensor
 {
 public:
-	ButtonPullUp(avr_bit_s pin, IController *controller) : 
+	ButtonHiZ(avr_bit_s pin, IController *controller) : 
 		IDigitalSensor(pin, controller),
 		_pressed(false),
 		_released(true)
 	{
-		_controller->setHigh(_port._port, _pin._bit);
+		_controller->setLow(_port._port, _pin._bit);
 		_controller->setLow(_port._ddr, pin._bit);
 	}
 	
 	//True, если кнопка нажата
 	avr_bit_t isPressed()
 	{
-		return _controller->bitIsLow(_pin);
+		return _controller->bitIsHigh(_pin);
 	}
 	
 	// True, если кнопка отжата
 	avr_bit_t isReleased()
 	{
-		return _controller->bitIsHigh(_pin);
+		return _controller->bitIsLow(_pin);
 	}
 	
 	// True, если кнопка была нажата с момента прошлого вызова этой функциями
@@ -66,5 +66,4 @@ public:
 	}
 };
 
-#endif // BUTTONPULLUP
-
+#endif // BUTTONHIZ_H

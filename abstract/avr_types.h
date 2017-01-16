@@ -79,6 +79,32 @@ private:
 	T _el[AVRC_ARRAY_MAX_LENGTH];	
 } ;
 
+typedef class AVR_PORT
+{
+public:
+	AVR_PORT()
+	{
+		_port = _ddr = _pin = 0;
+	}
+
+	AVR_PORT(avr_uint16_t offset)
+	{
+		_pin = offset;
+		_ddr = offset + 1;
+		_port = offset + 2;
+	}
+	
+	void setOffset(avr_uint16_t offset)
+	{
+		_pin = offset;
+		_ddr = offset + 1;
+		_port = offset + 2;
+	}
+	
+	avr_uint8_t _pin;
+	avr_uint8_t _ddr;
+	avr_uint8_t _port;
+} avr_port_s;
 
 #endif // AVR_TYPES
 

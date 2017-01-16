@@ -19,5 +19,6 @@ HEADERS += \
     sensors/ButtonPullUp.h \
     abstract/Object.h \
     actors/LED.h \
-    abstract/Actor.h
+    abstract/Actor.h \
+    sensors/ButtonHiZ.h
 

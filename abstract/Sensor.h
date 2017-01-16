@@ -11,8 +11,12 @@ public:
 	{
 		_pin = pin;
 		_controller = controller;
-		_controller->setPinDirection(pin, IController::Read);
+		_port.setOffset(pin._offset);
+		_controller->setPinDirection(_port._ddr, pin._bit, IController::Read);
+		
+#ifndef __AVRC_OBJECT_DONT_AUTOUPDATE__
 		_controller->registerObject(this);
+#endif
 	}
 	
 	avr_bit_t state()
@@ -23,6 +27,7 @@ public:
 protected:
 	avr_bit_s _pin;
 	IController *_controller;
+	avr_port_s _port;
 };
 
 class IAnalogSensor
@@ -38,9 +43,6 @@ public:
 	{
 		return 0;
 	}
-	
-protected:
-	virtual void update() = 0;
 
 	avr_bit_s _pin;
 	IController *_controller;
