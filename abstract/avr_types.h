@@ -109,5 +109,14 @@ public:
 	avr_uint8_t _port;
 } avr_port_s;
 
+#include <util/delay.h>
+
+void delay_ms(uint16_t n) 
+{
+	while (n--) 
+	{
+		_delay_ms(1);
+	}
+}
 #endif // AVR_TYPES
 

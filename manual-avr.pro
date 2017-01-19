@@ -3,7 +3,7 @@ QT =
 INCLUDEPATH += /usr/lib/avr/include \
 	       "C:/Program Files (x86)/Atmel/Studio/7.0/packs/atmel/ATmega_DFP/1.1.130/include"
 
-SOURCES += main.cpp 
+SOURCES += main.cpp  
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__
 
@@ -21,5 +21,7 @@ HEADERS += \
     actors/LED.h \
     abstract/Actor.h \
     sensors/ButtonHiZ.h \
-    sensors/Potentiometer.h
+    sensors/Potentiometer.h \
+    abstract/PWM.h \
+    dev/m8/PWMM8.h
 

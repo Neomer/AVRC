@@ -71,6 +71,11 @@ public:
 	{
 		return read() * AVRC_ANALOGSENSOR_VOLTAGE;
 	}
+	
+	avr_float32_t percent()
+	{
+		return read() / AVRC_ANALOGSENSOR_MAXVALUE;
+	}
 
 private:
 	avr_uint8_t _hysteresis;
