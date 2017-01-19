@@ -13,48 +13,10 @@ public:
 		
 	}
 	
-protected:
-	// Проверяет наличие ШИМ порта в текущей версии контроллера
-	bool PWM_available(pwm_number number)
-	{
-		if (number == IPWM::PWM_OC0)
-			return false;
-		
-		return true;
-	}
-
-	// Возвращает адрес OCR 
-	avr_mem_t PWM_getOCRaddress(pwm_number number)
-	{
-		switch (number) {
-			case IPWM::PWM_OC1:
-				return iOCR1A;
-				break;
-				
-			default:
-				return iOCR2;
-				break;
-		}
-	}
-
-	// TRUE, если ШИМ 8-битный
-	avr_bit_t PWM_is8bit(pwm_number number)
-	{
-		if (number == IPWM::PWM_OC1)
-			return false;
-		
-		return true;
-	}
-
 public:
 	// Устанавливает настройки порта
 	void PWM_setupPort(pwm_number number)
 	{
-		if (!PWM_available(number))
-		{
-			return;
-		}
-
 		switch (number)
 		{
 			case  IPWM::PWM_OC0:
@@ -66,6 +28,7 @@ public:
 //				TCNT1 = 0x00;
 //				ICR1 = 0xFF;
 //				OCR1A = 0x00;
+				_ocr = iOCR1A;
 				break;
 				
 			case IPWM::PWM_OC2:
@@ -73,9 +36,9 @@ public:
 				_controller->writeMem<avr_uint8_t>(iTCCR2, 0b01101001);
 				_controller->writeMem<avr_uint8_t>(iTCNT2, 0);
 				_controller->writeMem<avr_uint8_t>(iOCR2, 0);
+				_ocr = iOCR2;
 				break;
 		}
-		_ocr = PWM_getOCRaddress(number);
 	}	
 };
 

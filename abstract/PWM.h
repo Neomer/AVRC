@@ -42,7 +42,7 @@ public:
 	
 	void up()
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			avr_uint8_t ocr = _controller->readMem<avr_uint8_t>(_ocr);
 			if (ocr + _step <= AVRC_PWM_8BIT_MAXVALUE)
@@ -62,7 +62,7 @@ public:
 	
 	void down()
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			avr_uint8_t ocr = _controller->readMem<avr_uint8_t>(_ocr);
 			if (ocr  >= _step)
@@ -82,7 +82,7 @@ public:
 
 	void upTo(avr_uint8_t step)
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			avr_uint8_t ocr = _controller->readMem<avr_uint8_t>(_ocr);
 			if (ocr + step <= AVRC_PWM_8BIT_MAXVALUE)
@@ -102,7 +102,7 @@ public:
 	
 	void downTo(avr_uint8_t step)
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			avr_uint8_t ocr = _controller->readMem<avr_uint8_t>(_ocr);
 			if (ocr  >= step)
@@ -122,7 +122,7 @@ public:
 	
 	bool isMax()
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			return _controller->readMem<avr_uint8_t>(_ocr) + _step >= AVRC_PWM_8BIT_MAXVALUE;
 		}
@@ -135,7 +135,7 @@ public:
 	
 	bool isMin()
 	{
-		if (PWM_is8bit(_pwm_number))
+		if (PWM_is8bit())
 		{
 			return _controller->readMem<avr_uint8_t>(_ocr) - _step <= 0;
 		}
@@ -183,15 +183,19 @@ private:
 	avr_float32_t _delay_up, _delay_down;
 	
 protected:
-	avr_mem_t _ocr;
+	inline bool PWM_is8bit()
+	{
+		if (_pwm_number == PWM_OC1)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
-	// Проверяет наличие ШИМ порта в текущей версии контроллера
-	virtual bool PWM_available(pwm_number number) = 0;
-	// Возвращает адрес OCR 
-	virtual avr_mem_t PWM_getOCRaddress(pwm_number number) = 0;
-	// TRUE, если ШИМ 8-битный
-	virtual avr_bit_t PWM_is8bit(pwm_number number) = 0;
-	
+	avr_mem_t _ocr;
 	IController *_controller;
 };
 
