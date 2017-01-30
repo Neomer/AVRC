@@ -43,7 +43,7 @@ public:
 
 
  
-template <typename T>
+template <typename T, avr_uint8_t SIZE>
 class avr_array_s
 {
 public:
@@ -52,12 +52,61 @@ public:
 	{
 	}
 	
-	void append(T &item)
+	void clear()
 	{
-		if (_cnt < AVRC_ARRAY_MAX_LENGTH)
+		_cnt = 0;
+	}
+	
+	avr_bit_t isFull()
+	{
+		return _cnt >= SIZE;
+	}
+	
+	avr_bit_t isEmpty()
+	{
+		return _cnt == 0;
+	}
+	
+// 	void append(const T &item)
+// 	{
+// #ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
+// 		if (_cnt < AVRC_ARRAY_MAX_LENGTH)
+// 		{
+// 			_el[_cnt++] = item;
+// 		}
+// #else
+// 		_el[_cnt++] = item;
+// #endif
+// 	}
+	
+	void append(T item)
+	{
+#ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
+		if (_cnt < SIZE)
 		{
 			_el[_cnt++] = item;
 		}
+#else
+		_el[_cnt++] = item;
+#endif
+	}
+
+	void append(avr_array_s<T, SIZE> &other)
+	{
+#ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
+		if (_cnt + other.count() < SIZE)
+		{
+			for (int i = 0; i < other.count(); i++)
+			{
+				append(other.at(i));
+			}
+		}
+#else
+		for (int i = 0; i < other.count(); i++)
+		{
+			append(other.at(i));
+		}
+#endif
 	}
 	
 	avr_uint8_t count()
@@ -68,19 +117,58 @@ public:
 	const T at(avr_uint8_t index)
 	{
 #ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
-		if ((index >= 0) && (index < _cnt))
+		if ((index >= 0) && (index < SIZE))
 		{
 			return _el[index];
 		}
+		return _el[SIZE - 1];
 #else
 		return _el[index];
 #endif
 	}
 
+	void operator += (T item)
+	{
+		append(item);
+	}
+
+	void operator += (avr_array_s<T, SIZE> &other)
+	{
+		append(other);
+	}
+	
+	void set(avr_uint8_t index, T value)
+	{
+#ifndef __AVRC_ARRAY_DONT_CONTROL_RANGE__
+		if ((index >= 0) && (index < SIZE))
+		{
+			_el[index] = value;
+		}
+#else
+		_el[index] = value;
+#endif
+	}
+	
+	avr_uint16_t summ(avr_uint8_t count)
+	{
+		avr_uint16_t ret = 0;
+// 		avr_uint8_t idx = 0;
+// 		while (count--)
+// 		{
+// 			ret += _el[idx++];
+// 		}
+
+		for (int idx = 0; idx < count; idx++)
+			ret += _el[idx];
+		return ret;
+	}
+
 private:
 	avr_uint8_t _cnt;
-	T _el[AVRC_ARRAY_MAX_LENGTH];	
+	T _el[SIZE];	
 } ;
+
+typedef avr_array_s<avr_uint8_t, 5>  avr_char_a;
 
 typedef class AVR_PORT
 {
@@ -118,5 +206,38 @@ void delay_ms(uint16_t n)
 		_delay_ms(1);
 	}
 }
+
+avr_float32_t fromNF(avr_uint8_t natural, avr_uint8_t frac)
+{
+	return  natural + frac * 0.01;
+}
+
+// typedef class AVR_FLOAT16
+// {
+// public:
+// 	AVR_FLOAT16(avr_int16_t value)
+// 	{
+// 		_value = value;
+// 	}
+// 	
+// 	AVR_FLOAT16(avr_uint8_t natural, avr_uint8_t frac)
+// 	{
+// 		_value = 1 & (natural << 8) & frac;
+// 	}
+// 	
+// 	operator avr_float32_t() 
+// 	{
+// 		avr_float32_t ret;
+// 		ret = _value
+// 	}
+// 	
+// 	operator avr_float64_t()
+// 	{
+// 		avr_float64_t ret;
+// 	}
+// 	
+// private:
+// 	avr_int8_t ;
+// } avr_float16_s;
 #endif // AVR_TYPES
 

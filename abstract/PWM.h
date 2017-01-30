@@ -1,6 +1,10 @@
 #ifndef PWM_H
 #define PWM_H
 
+#ifndef __AVRC_PWM_ENABLED__
+	#warning "#define __AVRC_PWM_ENABLED__ expected!"
+#endif
+
 #ifdef __AVRC_PWM_ENABLED__
 
 #include "avr_types.h"

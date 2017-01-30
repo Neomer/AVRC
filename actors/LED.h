@@ -44,8 +44,12 @@ public:
 	
 private:
 	
+#ifdef __AVRC_OBJECT_DONT_AUTOUPDATE__
+public:
+#else
 protected:
-	void update()
+#endif	
+void update()
 	{
 		
 	}

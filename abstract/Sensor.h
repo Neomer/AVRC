@@ -26,6 +26,16 @@ public:
 		return _controller->readBit(_pin);
 	}
 	
+	avr_bit_t isHigh()
+	{
+		return _controller->bitIsHigh(_pin);
+	}
+	
+	avr_bit_t isLow()
+	{
+		return _controller->bitIsLow(_pin);
+	}
+	
 protected:
 	avr_bit_s _pin;
 	IController *_controller;

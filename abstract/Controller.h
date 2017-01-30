@@ -1,8 +1,11 @@
 #ifndef CONTROLLER
 #define CONTROLLER
 
+#include <avr/interrupt.h>
+
 #include "avr_types.h"
 #include "Object.h"
+
 
 class IController
 {
@@ -132,7 +135,36 @@ public:
 		return (volatile avr_uint8_t *) address;
 	}
 	
-	virtual void initPWM(avr_uint8_t pwm_num) = 0;
+	template<typename T>
+	void andMask(avr_mem_t address, T mask)
+	{
+		volatile avr_uint8_t * link = (avr_uint8_t *) address;
+		(*link) &= mask;
+	}
+
+	template<typename T>
+	void xorMask(avr_mem_t address, T mask)
+	{
+		volatile avr_uint8_t * link = (avr_uint8_t *) address;
+		(*link) ^= mask;
+	}
+	
+	void waitForHigh(avr_mem_t address, avr_bit_t pin)
+	{
+		while (bitIsLow(address, pin));
+	}
+	
+	void waitForLow(avr_mem_t address, avr_bit_t pin)
+	{
+		while (bitIsHigh(address, pin));
+	}
+	
+#ifdef __AVRC_INTERRUPTION_ENABLED__	
+	virtual void initInterruptions() = 0;
+	virtual avr_uint8_t getVectorINT0() = 0;
+	virtual avr_uint8_t getVectorINT1() = 0;
+	virtual avr_uint8_t getVectorINT2() = 0;
+#endif	
 
 #ifndef __AVRC_OBJECT_DONT_AUTOUPDATE__
 	void registerObject(IObject *obj)

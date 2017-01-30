@@ -4,7 +4,7 @@
 #include "avr_types.h"
 #include "Controller.h"
 
-class IActor: public IObject
+class IActor//: public IObject
 {
 public:
 	IActor(avr_bit_s pin, IController *controller)
@@ -17,6 +17,7 @@ public:
 		_controller->registerObject(this);
 #endif
 	}
+
 
 protected:
 	avr_port_s _port;

@@ -9,6 +9,4 @@ int main()
 {
 	ControllerM8 c;
 	ButtonPullUp b(avr_bit_s(iPORTB, 0), &c);
-		
-	return c.exec();
 }
