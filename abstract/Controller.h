@@ -158,36 +158,6 @@ public:
 	{
 		while (bitIsHigh(address, pin));
 	}
-	
-#ifdef __AVRC_INTERRUPTION_ENABLED__	
-	virtual void initInterruptions() = 0;
-	virtual avr_uint8_t getVectorINT0() = 0;
-	virtual avr_uint8_t getVectorINT1() = 0;
-	virtual avr_uint8_t getVectorINT2() = 0;
-#endif	
-
-#ifndef __AVRC_OBJECT_DONT_AUTOUPDATE__
-	void registerObject(IObject *obj)
-	{
-		_objects.append(obj);
-	}
-	
-
-	void update()
-	{
-		for (int i = 0; i < _objects.count(); i++)
-		{
-			_objects.at(i)->update();
-		}
-	}
-#endif
-	
-protected:
-
-private:
-#ifndef __AVRC_OBJECT_DONT_AUTOUPDATE__
-	avr_array_s<IObject *> _objects;
-#endif
 };
 
 #endif // CONTROLLER

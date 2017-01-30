@@ -33,10 +33,14 @@ public:
 	{
 		_offset = offset;
 		_bit = bit;
+		_high_mask = 1 << bit;
+		_low_mask = ~_high_mask;
 	}
 
 	avr_mem_t _offset; 
 	avr_uint8_t _bit; 
+	avr_uint8_t _high_mask, _low_mask;
+	
 } avr_bit_s;
 
 #define AVRC_ARRAY_MAX_LENGTH	50
@@ -197,47 +201,6 @@ public:
 	avr_uint8_t _port;
 } avr_port_s;
 
-#include <util/delay.h>
 
-void delay_ms(uint16_t n) 
-{
-	while (n--) 
-	{
-		_delay_ms(1);
-	}
-}
-
-avr_float32_t fromNF(avr_uint8_t natural, avr_uint8_t frac)
-{
-	return  natural + frac * 0.01;
-}
-
-// typedef class AVR_FLOAT16
-// {
-// public:
-// 	AVR_FLOAT16(avr_int16_t value)
-// 	{
-// 		_value = value;
-// 	}
-// 	
-// 	AVR_FLOAT16(avr_uint8_t natural, avr_uint8_t frac)
-// 	{
-// 		_value = 1 & (natural << 8) & frac;
-// 	}
-// 	
-// 	operator avr_float32_t() 
-// 	{
-// 		avr_float32_t ret;
-// 		ret = _value
-// 	}
-// 	
-// 	operator avr_float64_t()
-// 	{
-// 		avr_float64_t ret;
-// 	}
-// 	
-// private:
-// 	avr_int8_t ;
-// } avr_float16_s;
 #endif // AVR_TYPES
 
