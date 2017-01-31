@@ -4,7 +4,7 @@
 #include "avr_types.h"
 #include "Controller.h"
 
-class IActor//: public IObject
+class IActor
 {
 public:
 	IActor(avr_bit_s pin, IController *controller)
@@ -13,9 +13,6 @@ public:
 		_controller = controller;
 		_port.setOffset(pin._offset);
 		_controller->setPinDirection(_port._ddr, pin._bit, IController::Write);
-#ifndef __AVRC_OBJECT_DONT_AUTOUPDATE__
-		_controller->registerObject(this);
-#endif
 	}
 
 

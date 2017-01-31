@@ -1,12 +1,15 @@
+#define F_CPU	8000000UL
 
-
-
-#include "dev/m8/ControllerM8.h"
-#include "dev/m8/MemoryM8.h"
-#include "sensors/ButtonPullUp.h"
+#include <avr/io.h>
+#include <util/delay.h>
 
 int main()
 {
-	ControllerM8 c;
-	ButtonPullUp b(avr_bit_s(iPORTB, 0), &c);
+	DDRB = 0x01;
+	
+	while (1)
+	{
+		PORTB = 0x00;
+		PORTB = 0x01;
+	}
 }
