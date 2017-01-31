@@ -19,13 +19,13 @@ public:
 	}
 	
 	//Включает светодиод
-	void turnOn()
+	inline void turnOn()
 	{
 		_controller->setHigh(_port._port, _pin._bit);
 	}
 	
 	//Выключает светодиод
-	void turnOff()
+	inline void turnOff()
 	{
 		_controller->setLow(_port._port, _pin._bit);
 	}
@@ -40,18 +40,6 @@ public:
 	avr_bit_t isDark()
 	{
 		return _controller->bitIsHigh(_port._pin, _pin._bit);
-	}
-	
-private:
-	
-#ifdef __AVRC_OBJECT_DONT_AUTOUPDATE__
-public:
-#else
-protected:
-#endif	
-void update()
-	{
-		
 	}
 };
 

@@ -158,10 +158,6 @@ public:
 	{
 		while (bitIsHigh(address, pin));
 	}
-	
-protected:
-
-private:
 };
 
 #endif // CONTROLLER

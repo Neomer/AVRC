@@ -33,10 +33,14 @@ public:
 	{
 		_offset = offset;
 		_bit = bit;
+		_high_mask = 1 << bit;
+		_low_mask = ~_high_mask;
 	}
 
 	avr_mem_t _offset; 
 	avr_uint8_t _bit; 
+	avr_uint8_t _high_mask, _low_mask;
+	
 } avr_bit_s;
 
 #define AVRC_ARRAY_MAX_LENGTH	50
@@ -196,7 +200,6 @@ public:
 	avr_uint8_t _ddr;
 	avr_uint8_t _port;
 } avr_port_s;
-
 
 
 #endif // AVR_TYPES
