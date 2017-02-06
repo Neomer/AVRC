@@ -74,7 +74,7 @@ public:
 	{
 		volatile avr_int8_t * link = (avr_int8_t *) address;
 
-		*link != 1 << bit;
+		*link = ~(1 << bit);
 	}
 	
 	avr_bit_t readBit(avr_mem_t address, avr_int8_t bit)

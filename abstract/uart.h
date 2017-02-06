@@ -2,6 +2,7 @@
 #define UART_H
 
 #include <avr/io.h>
+#include <stdlib.h>
 
 #define UART_READY_TO_SEND		UDRE
 #define UART_READY_TO_READ		RXC

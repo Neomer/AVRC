@@ -32,5 +32,7 @@ HEADERS += \
     sensors/dht11.h \
     abstract/Bit.h \
     abstract/uart.h \
-    abstract/Queue.h
+    abstract/Queue.h \
+    connectors/nRF24L01.h \
+    abstract/spi.h
 
