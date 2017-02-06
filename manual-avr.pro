@@ -27,9 +27,10 @@ HEADERS += \
     sensors/Potentiometer.h \
     abstract/PWM.h \
     dev/m8/PWMM8.h \
-    abstract/UART.h \
     dev/m8/UARTM8.h \
     abstract/Timer.h \
     sensors/dht11.h \
-    abstract/Bit.h
+    abstract/Bit.h \
+    abstract/uart.h \
+    abstract/Queue.h
 
