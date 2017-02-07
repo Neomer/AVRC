@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "MemMath.h"
+#include "actors/led_c.h"
 #include "abstract/uart.h"
 
 #define  SPI_PORT			PORTB
@@ -30,8 +31,7 @@
 
 int main()
 {
-	__setHigh(DDRB, 0);
-	__setLow(PORTB, 0);
+	led(DDRB, 0);
 	
 	uart_init(UART_BAUD_8MHz_38400);
 	nrf24_init();
@@ -40,9 +40,9 @@ int main()
 	uint8_t b;
 	while (1)
 	{
-		__setHigh(PORTB, 0);
+		led_turn_on(PORTB, 0);
 		nrf24_send_char('#');
 		__setLow(PORTB, 0);
-		_delay_ms(1000);
+		led_turn_off(PORTB, 0);
 	}
 }

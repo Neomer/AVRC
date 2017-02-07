@@ -35,5 +35,6 @@ HEADERS += \
     abstract/uart.h \
     abstract/Queue.h \
     connectors/nRF24L01.h \
-    abstract/spi.h
+    abstract/spi.h \
+    actors/led_c.h
 
