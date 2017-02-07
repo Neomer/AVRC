@@ -6,9 +6,9 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-#include "MemMath.h"
-#include "abstract/uart.h"
-#include "actors/led_c.h"
+#include <MemMath.h>
+#include <abstract/uart.h>
+#include <actors/led_c.h>
 
 #define  SPI_PORT			PORTB
 #define  SPI_DDR			DDRB
@@ -27,7 +27,7 @@
 #define SPI_PORT_IRQ		PORTC
 #define SPI_DDR_IRQ			DDRC
 
-#include "connectors/nRF24L01.h"
+#include <connectors/nRF24L01.h>
 
 int main()
 {
@@ -38,15 +38,11 @@ int main()
 	nrf24_config(sizeof(uint8_t), 2);
 	
 	uint8_t b;
-	
 	while (1)
 	{
-		if (nrf24_has_data())
-		{
-			led_turn_on(PORTB, 0);
-			nrf24_read_char(&b);
-			uart_send_char(b);
-			led_turn_off(PORTB, 0);
-		}
+		led_turn_on(PORTB, 0);
+		nrf24_send_char('#');
+		__setLow(PORTB, 0);
+		led_turn_off(PORTB, 0);
 	}
 }

@@ -3,17 +3,18 @@ QT =
 INCLUDEPATH += /usr/lib/avr/include \
 	       "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include"
 
-SOURCES += main.cpp \  
-    main_lib.cpp \
-    nrf24_receiver.cpp \
-    nrf24_transmitter.cpp
+SOURCES += samples/main.cpp \  
+    samples/main_lib.cpp \
+    samples/nrf24/nrf24_receiver.cpp \
+    samples/nrf24/nrf24_transmitter.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
 	   __AVR_ATmega8__
 
 DISTFILES += \
-    compile.sh
+    samples/compile.sh \
+    samples/nrf24/compile_nrf24.sh
 
 HEADERS += \
     abstract/Controller.h \
@@ -38,3 +39,4 @@ HEADERS += \
     abstract/spi.h \
     actors/led_c.h
 
+INCLUDEPATH += ../

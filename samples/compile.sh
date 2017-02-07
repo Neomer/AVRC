@@ -3,13 +3,13 @@ clear
 echo Compiling simple C code main.cpp
 echo
 
-avr-gcc -mmcu=atmega8 -Os -o main.o main.cpp
+avr-gcc -mmcu=atmega8 -Os -o main.o main.cpp -I ../include
 avr-objcopy -O ihex main.o main.hex
 
 echo Compiling AVRC code main_lib.cpp
 echo
 
-avr-gcc -mmcu=atmega8 -Os -o main_lib.o main_lib.cpp
+avr-gcc -mmcu=atmega8 -Os -o main_lib.o main_lib.cpp -I ../include
 avr-objcopy -O ihex main_lib.o min_lib.hex
 
 echo 

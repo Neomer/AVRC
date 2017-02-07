@@ -1,13 +1,13 @@
 #define F_CPU	8000000UL
 
-#include "abstract/Controller.h"
-#include "dev/m8/MemoryM8.h"
-#include "actors/LED.h"
+#include <abstract/Controller.h>
+#include <dev/m8/MemoryM8.h>
+#include <actors/LED.h>
 
 
 #include <avr/iom8.h>
 #include "stdlib.h"
-#include "abstract/Queue.h"
+#include <abstract/Queue.h>
 
 static QUEUE(30) uart_rx;
 static QUEUE(30) uart_tx;
