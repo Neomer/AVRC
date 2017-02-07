@@ -4,7 +4,9 @@ INCLUDEPATH += /usr/lib/avr/include \
 	       "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include"
 
 SOURCES += main.cpp \  
-    main_lib.cpp
+    main_lib.cpp \
+    nrf24_receiver.cpp \
+    nrf24_transmitter.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
@@ -29,7 +31,6 @@ HEADERS += \
     dev/m8/PWMM8.h \
     dev/m8/UARTM8.h \
     abstract/Timer.h \
-    sensors/dht11.h \
     abstract/Bit.h \
     abstract/uart.h \
     abstract/Queue.h \

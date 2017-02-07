@@ -30,20 +30,19 @@
 
 int main()
 {
+	__setHigh(DDRB, 0);
+	__setLow(PORTB, 0);
+	
 	uart_init(UART_BAUD_8MHz_38400);
 	nrf24_init();
 	nrf24_config(sizeof(uint8_t), 2);
 	
 	uint8_t b;
-	
 	while (1)
 	{
+		__setHigh(PORTB, 0);
 		nrf24_send_char('#');
-		
-		if (nrf24_has_data())
-		{
-			nrf24_read_char(&b);
-			uart_send_char(b);
-		}
+		__setLow(PORTB, 0);
+		_delay_ms(1000);
 	}
 }

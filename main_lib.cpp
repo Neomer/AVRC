@@ -3,7 +3,6 @@
 #include "abstract/Controller.h"
 #include "dev/m8/MemoryM8.h"
 #include "actors/LED.h"
-#include "sensors/dht11.h"
 
 
 #include <avr/iom8.h>
