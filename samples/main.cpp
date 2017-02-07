@@ -39,12 +39,15 @@ int main()
 	
 	while (1)
 	{
-		nrf24_send_char('#');
-		
-		if (nrf24_has_data())
+		if (__bitIsLow(PIND, 7))
 		{
-			nrf24_read_char(&b);
-			uart_send_char(b);
+			nrf24_send_char('#');
+			
+			if (nrf24_has_data())
+			{
+				nrf24_read_char(&b);
+				uart_send_char(b);
+			}
 		}
 	}
 }

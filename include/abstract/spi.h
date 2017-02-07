@@ -37,7 +37,7 @@ inline void spi_init_master( void )
 	__setLow(SPI_DDR, SPI_MISO);
 	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
 	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
-	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
+	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(1<<SPR0);
 	SPSR = (0<<SPI2X);
 }
 
@@ -55,6 +55,23 @@ inline void spi_write_byte( uint8_t data )
 	spi_wait_status;
 }
 
+inline uint8_t spi_exchange(uint8_t data)
+{
+	uint8_t reply = 0;
+	for (int i=7; i>=0; i--) {
+	  reply <<= 1;
+	  __setLow(SPI_PORT, SPI_SCK);
+	  if (data & (1<<i))
+		  __setHigh(SPI_PORT, SPI_MOSI);
+	  else
+		  __setLow(SPI_PORT, SPI_MOSI);
+	  __setHigh(SPI_PORT, SPI_SCK);
+	  if (__bitIsHigh(SPI_PORT, SPI_MISO))
+		reply |= 1;
+	}
+	return reply;
+
+}
 
 inline uint8_t spi_fast_exchage( uint8_t data )
 {

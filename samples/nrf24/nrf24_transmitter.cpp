@@ -17,13 +17,13 @@
 #define  SPI_SS				2
 #define  SPI_MISO			4
 
-#define SPI_CE				1
-#define SPI_PIN_CE			PINB
-#define SPI_PORT_CE			PORTB
+#define SPI_CE				0
+#define SPI_PIN_CE			PINC
+#define SPI_PORT_CE			PORTC
 #define SPI_DDR_CE			DDRC
 
 #define SPI_IRQ				1
-#define SPI_PIN_IRQ			PIC
+#define SPI_PIN_IRQ			PINC
 #define SPI_PORT_IRQ		PORTC
 #define SPI_DDR_IRQ			DDRC
 
@@ -36,13 +36,23 @@ int main()
 	uart_init(UART_BAUD_8MHz_38400);
 	nrf24_init();
 	nrf24_config(sizeof(uint8_t), 2);
+
+	//led_turn_off(PORTB, 0);
+	
+	__setLow(DDRD, 7);
+	__setHigh(PORTD, 7);
 	
 	uint8_t b;
 	while (1)
 	{
-		led_turn_on(PORTB, 0);
-		nrf24_send_char('#');
-		__setLow(PORTB, 0);
-		led_turn_off(PORTB, 0);
+		if (__bitIsLow(PIND, 7))
+		{
+			led_turn_on(PORTB, 0);
+			uart_send_char('#');
+			nrf24_send_char('#');
+			led_turn_off(PORTB, 0);
+			
+			_delay_ms(1000);
+		}
 	}
 }

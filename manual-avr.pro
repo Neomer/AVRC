@@ -6,7 +6,9 @@ INCLUDEPATH += /usr/lib/avr/include \
 SOURCES += samples/main.cpp \  
     samples/main_lib.cpp \
     samples/nrf24/nrf24_receiver.cpp \
-    samples/nrf24/nrf24_transmitter.cpp
+    samples/nrf24/nrf24_transmitter.cpp \
+    samples/pwm/pwm_led.cpp \
+    samples/spi/spi_bmp.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
@@ -17,26 +19,27 @@ DISTFILES += \
     samples/nrf24/compile_nrf24.sh
 
 HEADERS += \
-    abstract/Controller.h \
-    abstract/avr_types.h \
-    dev/m8/ControllerM8.h \
-    dev/m8/MemoryM8.h \
-    abstract/Sensor.h \
-    sensors/ButtonPullUp.h \
-    abstract/Object.h \
-    actors/LED.h \
-    abstract/Actor.h \
-    sensors/ButtonHiZ.h \
-    sensors/Potentiometer.h \
-    abstract/PWM.h \
-    dev/m8/PWMM8.h \
-    dev/m8/UARTM8.h \
-    abstract/Timer.h \
-    abstract/Bit.h \
-    abstract/uart.h \
-    abstract/Queue.h \
-    connectors/nRF24L01.h \
-    abstract/spi.h \
-    actors/led_c.h
+    include/abstract/Controller.h \
+    include/abstract/avr_types.h \
+    include/dev/m8/ControllerM8.h \
+    include/dev/m8/MemoryM8.h \
+    include/abstract/Sensor.h \
+    include/sensors/ButtonPullUp.h \
+    include/abstract/Object.h \
+    include/actors/LED.h \
+    include/abstract/Actor.h \
+    include/sensors/ButtonHiZ.h \
+    include/sensors/Potentiometer.h \
+    include/abstract/PWM.h \
+    include/dev/m8/PWMM8.h \
+    include/dev/m8/UARTM8.h \
+    include/abstract/Timer.h \
+    include/abstract/Bit.h \
+    include/abstract/uart.h \
+    include/abstract/Queue.h \
+    include/connectors/nRF24L01.h \
+    include/abstract/spi.h \
+    include/actors/led_c.h \
+    include/sensors/bmp280.h
 
-INCLUDEPATH += ../
+INCLUDEPATH += include
