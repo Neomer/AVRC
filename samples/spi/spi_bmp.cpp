@@ -15,19 +15,22 @@
 int main( void )
 {
 	uart_init(UART_BAUD_8MHz_38400);
-	spi_init_master();
-	spi_ss_low;
+	bmp280_init();
+	bmp280_register_write(BMP280_REG_RESET, BMP280_POWER_ON_RESET);
+	_delay_ms(100);
+	uint8_t cfg = bmp280_register_read(BMP280_REG_CONFIG);
+	__setHigh(cfg, 0);
+	bmp280_register_write(BMP280_REG_CONFIG, cfg);
+	_delay_ms(100);
 	
 	
 	while (1)
 	{
-		spi_ss_low;
-		_delay_ms(20);
-		uint8_t dev_id = spi_exchange( BMP280_REG_CHIPID | 0x80 );
-		_delay_ms(20);
-		spi_ss_high;
-		
-		uart_send_int(dev_id);
+		uint8_t dev_id = bmp280_register_read(BMP280_REG_CHIPID);
+		if (dev_id != 0xff)
+		{
+			uart_send_int(dev_id);
+		}
 		_delay_ms(1000);
 	}
 	

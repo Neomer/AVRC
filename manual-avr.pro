@@ -8,7 +8,8 @@ SOURCES += samples/main.cpp \
     samples/nrf24/nrf24_receiver.cpp \
     samples/nrf24/nrf24_transmitter.cpp \
     samples/pwm/pwm_led.cpp \
-    samples/spi/spi_bmp.cpp
+    samples/spi/spi_bmp.cpp \
+    samples/i2c/i2c_bmp.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
@@ -40,6 +41,7 @@ HEADERS += \
     include/connectors/nRF24L01.h \
     include/abstract/spi.h \
     include/actors/led_c.h \
-    include/sensors/bmp280.h
+    include/sensors/bmp280.h \
+    include/abstract/i2c.h
 
 INCLUDEPATH += include

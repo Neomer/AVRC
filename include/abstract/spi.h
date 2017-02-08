@@ -2,19 +2,14 @@
 #define SPI_H
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "../MemMath.h"
 
 // DEFINES!
 #ifndef SPI_MOSI
-	#error "You should define api port constants!"
-
-	#define  SPI_PORT		0
-	#define  SPI_DDR		0
-	#define  SPI_MOSI		0
-	#define  SPI_SCK		0
-	#define  SPI_SS			0
-	#define  SPI_MISO		0
-#endif
+	#warning "You should define SPI pins first! SPI interface disabled!"
+#else
+#define AVRC_SPI
 
 inline void spi_init_master( void );
 inline void spi_init_slave( void );
@@ -37,7 +32,7 @@ inline void spi_init_master( void )
 	__setLow(SPI_DDR, SPI_MISO);
 	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
 	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
-	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(1<<SPR0);
+	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
 	SPSR = (0<<SPI2X);
 }
 
@@ -77,13 +72,12 @@ inline uint8_t spi_fast_exchage( uint8_t data )
 {
 	SPDR = data;
 	spi_wait_status;
+	_delay_ms(10);
 	return SPDR;
 }
 
 inline uint8_t spi_read_byte( void )
 {
-	SPDR = 0x00;
-	spi_wait_status;
 	return SPDR;
 }
 
@@ -115,6 +109,7 @@ inline void spi_write_string( const char *data )
 	}
 }
 
+#endif
 
 
 #endif // SPI_H
