@@ -56,8 +56,8 @@
 #define NRF24_RX_P_NO0					1
 #define NRF24_TX_FULL0					0 /*флаг переполнения TX FIFO буфера передачи. 1-переполнен, 0-есть еще место.*/
 #define NRF24_REGISTER_OBSERVE_TX		0x08
-#define NRF24_PLOS_CNT_MASK				0xF0
-#define NRF24_ARC_CNT_MASK				0x0F
+#define NRF24_PLOS_CNT_MASK				0xF0 // Count lost packets
+#define NRF24_ARC_CNT_MASK				0x0F // Count retransmitted packets
 #define NRF24_REGISTER_RPD				0x09
 #define NRF24_REGISTER_RX_ADDR_P0		0x0A
 #define NRF24_REGISTER_RX_ADDR_P1		0x0B
@@ -140,10 +140,11 @@ inline uint8_t nrf24_read_status()
 	return ret;
 }
 
-inline uint8_t nrf24_read_register(uint8_t address)
+uint8_t nrf24_read_register(uint8_t address)
 {
 	spi_ss_low;
-	uint8_t ret = spi_fast_exchage(NRF24_R_REGISTER | (address & NRF24_REGISTER_MASK));
+	spi_fast_exchage(NRF24_R_REGISTER | (address & NRF24_REGISTER_MASK));
+	uint8_t ret = spi_fast_exchage(NRF24_NOP);
 	spi_ss_high;
 	return ret;
 }
@@ -178,6 +179,7 @@ inline void nrf24_prepare_rx()
 										(1 << NRF24_MASK_RX_DR) |
 										(1 << NRF24_MASK_MAX_RT));
 	_delay_us(135);
+	nrf24_ce_high;
 }
 
 inline void nrf24_send_char(uint8_t data)
@@ -240,13 +242,14 @@ inline void nrf24_send_string(const char *data)
 	nrf24_ce_high;
 }
 
-inline void nrf24_read_char( uint8_t *buffer)
+inline uint8_t nrf24_read_char( void )
 {
 	spi_ss_low;
     spi_fast_exchage( NRF24_R_RX_PAYLOAD );
-	*buffer = spi_read_byte();
+	uint8_t ret = spi_fast_exchage(NRF24_NOP);
     spi_ss_high;
-	nrf24_write_register(NRF24_REGISTER_STATUS, (1 << NRF24_RX_DR));
+	//nrf24_write_register(NRF24_REGISTER_STATUS, (1 << NRF24_RX_DR));
+	return ret;
 }
 
 inline void nrf24_read_array( uint8_t *buffer, uint8_t length)
@@ -272,16 +275,20 @@ inline void nrf24_init()
 	__setLow(SPI_DDR_IRQ, SPI_IRQ);
 	
 	nrf24_ce_low;
+	
+	nrf24_write_register(NRF24_REGISTER_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT);
+	nrf24_write_register(NRF24_REGISTER_RX_ADDR_P0, 43);
+	nrf24_write_register(NRF24_REGISTER_TX_ADDR, 43);
 }
 
 inline void nrf24_config(uint8_t dataLength, uint8_t channel)
 {
+	_delay_ms(5);	
+	
 	nrf24_write_register(NRF24_REGISTER_RF_CH, channel);
 	nrf24_write_register(NRF24_REGISTER_RX_PW_P0, dataLength);
-	//nrf24_write_register(NRF24_EN_RXADDR, 0x00);
 	
 	nrf24_prepare_rx();
-	nrf24_ce_high;
 }
 
 

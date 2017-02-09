@@ -6,7 +6,10 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <abstract/uart.h>
- 
+
+#include <stdlib.h>
+#include <string.h>
+
 #define ACK 0x7E
 
 //Initialize SPI Master Device
@@ -38,16 +41,16 @@ int main(void)
  
     while(1)
     {
-        data = 0x00;                    //Reset ACK in "data"
+//		uart_send_str("x=");
+//		uart_send_int(x);
+//		uart_send_str(" ");
 		PORTB &= ~(1 << 2);
-        data = spi_tranceiver(x);     //Send "x", receive ACK in "data"
-		PORTB |= (1 << 2);
-        if(data == ACK) 
+        data = spi_tranceiver(x);
+		uart_send_int(data);
+        if(data == ACK)
 		{
-			PORTB &= ~(1 << 2);
 	        x = spi_tranceiver(ACK);
-			PORTB |= (1 << 2);
-			uart_send_str("OK.. ");
+			uart_send_str(" OK.. x=");
 			uart_send_int(x);
 			uart_send_char('\n');
         }
@@ -55,6 +58,7 @@ int main(void)
 		{
 			uart_send_str("FAILED\n");
         }
+		PORTB |= (1 << 2);
         _delay_ms(500);                 //Wait
     }
 }

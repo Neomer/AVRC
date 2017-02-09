@@ -1,5 +1,8 @@
 cls
 
+del %FILE%.o
+del %FILE%.hex
+
 set FILE=%1
 avr-gcc -mmcu=atmega8 -Os -o %FILE%.o %FILE%.cpp -I ../../include
 avr-objcopy -O ihex %FILE%.o %FILE%.hex

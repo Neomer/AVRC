@@ -25,18 +25,20 @@ unsigned char spi_tranceiver (unsigned char data)
 int main(void)
 {
     spi_init_slave();                             //Initialize slave SPI
-    unsigned char data, s = 0;
+    volatile unsigned char data, 
+			s = 0,
+			pkg = ACK;
     while(1)
     {
-        data = spi_tranceiver(ACK);
+        data = spi_tranceiver(pkg);
 		if (data == ACK)
 		{
-			data = spi_tranceiver(s);
+			pkg = ACK;
 		}
 		else
 		{
-			s = data + 1;
+			pkg = data + 1;
 		}
-        _delay_ms(20);
+        //_delay_ms(20);
     }
 }

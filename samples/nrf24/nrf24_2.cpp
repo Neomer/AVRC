@@ -35,12 +35,8 @@
 
 void spi_init_master( void )
 {
-	__setLow(SPI_DDR, SPI_MISO);
-	__setHigh(SPI_PORT, SPI_MISO);
-	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
-	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
-	SPSR = (0<<SPI2X);
-	spi_ss_high;
+	DDRB = (1<<5)|(1<<3)|(1<<2);
+    SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 }
 
 volatile uint8_t spi_fast_exchage( uint8_t data )

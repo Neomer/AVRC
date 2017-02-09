@@ -20,10 +20,10 @@
 inline void spi_init_master( void )
 {
 	__setLow(SPI_DDR, SPI_MISO);
+	__setHigh(SPI_PORT, SPI_MISO);
 	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
-//	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
-	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
-	SPSR = (0<<SPI2X);
+	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(0<<SPR1)|(0<<SPR0);
+	SPSR = (1<<SPI2X);
 	spi_ss_high;
 }
 
@@ -73,11 +73,11 @@ inline uint8_t spi_read_byte( void )
 
 inline void spi_read_data( uint8_t *buffer, uint8_t length )
 {
-	for (uint8_t i = 0; i < length; i++)
+	while (length--)
 	{
-		SPDR = buffer[i];
+		SPDR = *buffer;
 		spi_wait_status;
-		buffer[i] = SPDR;
+		*(buffer++) = SPDR;
 	}
 }
 

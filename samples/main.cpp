@@ -45,7 +45,7 @@ int main()
 			
 			if (nrf24_has_data())
 			{
-				nrf24_read_char(&b);
+				b = nrf24_read_char();
 				uart_send_char(b);
 			}
 		}
