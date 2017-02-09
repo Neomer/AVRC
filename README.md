@@ -6,9 +6,9 @@ Classes helps you to write AVR microcontrollers' code on programmer-friendly lag
 
 All code wrote in .h headers files, so .HEX size has minimal difference with plain C-code. You can easly use this library with any other libraries.
 
-Library grants easy access to: UART, SPI, NRF24L01+, LED manipulations, Bit mathematics
+Library grants easy access to: UART, SPI, I2C (TWI), LED manipulations, Bit mathematics, nRF24L01+
 
-Currently in progress: ESP8266
+Currently in progress: ESP8266, BMP180, BMP280
 	
 
 #Code sample
