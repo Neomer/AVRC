@@ -6,20 +6,10 @@
 #include "../MemMath.h"
 
 // DEFINES!
-#ifndef SPI_MOSI
-	#warning "You should define SPI pins first! SPI interface disabled!"
-#else
+//#ifndef SPI_MOSI
+//	#warning "You should define SPI pins first! SPI interface disabled!"
+//#else
 #define AVRC_SPI
-
-inline void spi_init_master( void );
-inline void spi_init_slave( void );
-inline void spi_write_byte( uint8_t data );
-// Sends 1 byte of data and receive answer
-inline uint8_t spi_fast_exchage( uint8_t data );
-inline uint8_t spi_read_byte( void );
-inline void spi_read_data( uint8_t *buffer, uint8_t length );
-inline void spi_write_data( uint8_t *buffer, uint8_t length );
-inline void spi_write_string( const char *data );
 
 // Переводит порт в режим чтения/записи
 #define spi_ss_low			__setLow(SPI_PORT, SPI_SS)
@@ -31,16 +21,17 @@ inline void spi_init_master( void )
 {
 	__setLow(SPI_DDR, SPI_MISO);
 	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
-	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
+//	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
 	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
 	SPSR = (0<<SPI2X);
+	spi_ss_high;
 }
 
 inline void spi_init_slave( void )
 {
-	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(0<<SPI_MISO);
+	SPI_DDR |= (0<<SPI_MOSI)|(0<<SPI_SCK)|(0<<SPI_SS)|(1<<SPI_MISO);
 	SPI_PORT |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS)|(1<<SPI_MISO);
-	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
+	SPCR = (1 << SPIE) | (1<<SPE)|(0<<DORD)|(0<<MSTR)|(0<<CPOL)|(0<<CPHA)|(1<<SPR1)|(0<<SPR0);
 	SPSR = (0<<SPI2X);
 }
 
@@ -72,7 +63,6 @@ inline uint8_t spi_fast_exchage( uint8_t data )
 {
 	SPDR = data;
 	spi_wait_status;
-	_delay_ms(10);
 	return SPDR;
 }
 
@@ -109,7 +99,7 @@ inline void spi_write_string( const char *data )
 	}
 }
 
-#endif
+//#endif
 
 
 #endif // SPI_H

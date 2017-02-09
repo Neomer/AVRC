@@ -1,27 +1,15 @@
 clear
 
-echo Compiling NRF24 Receiver code...
-echo
+rm firmware.o
+rm firmware.hex
 
-avr-gcc -mmcu=atmega8 -Os -o nrf24_receiver.o nrf24_receiver.cpp -I ../../include
-avr-objcopy -O ihex nrf24_receiver.o nrf24_receiver.hex
+echo Compiling...
+#avr-gcc -mmcu=atmega8 -Os -o firmware.o nrf24_transmitter.cpp -I ../../include
+avr-gcc -mmcu=atmega8 -Os -o firmware.o nrf24_2.cpp -I ../../include
+avr-objcopy -O ihex firmware.o firmware.hex
 
-echo Compiling NRF24 Transmitter code...
-echo
+avr-size --mcu=atmega8 --format=avr firmware.o
 
-avr-gcc -mmcu=atmega8 -Os -o nrf24_transmitter.o nrf24_transmitter.cpp -I ../../include
-avr-objcopy -O ihex nrf24_transmitter.o nrf24_transmitter.hex
+echo Write to IC
+avrdude -U flash:w:firmware.hex -p m8 -b 9600 -c usbasp -e
 
-echo 
-echo ========================================
-echo NRF24 Receiver code memory usage
-echo 
-avr-size --mcu=atmega8 --format=avr nrf24_receiver.o
-
-echo
-echo ========================================
-echo NRF24 Transmitter code memory usage
-echo 
-
-avr-size --mcu=atmega8 --format=avr nrf24_transmitter.o
-echo 

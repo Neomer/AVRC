@@ -9,7 +9,10 @@ SOURCES += samples/main.cpp \
     samples/nrf24/nrf24_transmitter.cpp \
     samples/pwm/pwm_led.cpp \
     samples/spi/spi_bmp.cpp \
-    samples/i2c/i2c_bmp.cpp
+    samples/i2c/i2c_bmp.cpp \
+    samples/nrf24/nrf24_2.cpp \
+    samples/spi/spi_master.cpp \
+    samples/spi/spi_slave.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
