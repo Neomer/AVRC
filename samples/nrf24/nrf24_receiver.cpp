@@ -42,26 +42,25 @@ int main()
 	
 	//uint8_t data[32];
 	uint8_t cfg, st, rf;
+
+	nrf24_prepare_rx();
+
 	while (1)
 	{
 		if (__bitIsLow(PIND, 7))
 		{
-			nrf24_prepare_rx();
-			
+			uart_send_str("Read.. ");
+			cfg = nrf24_read_register(NRF24_REGISTER_CONFIG);
+			st = nrf24_read_status();
+			rf = nrf24_read_register(NRF24_REGISTER_OBSERVE_TX);
+			uart_send_str("cfg: ");
+			uart_send_int(cfg);
+			uart_send_str(" status: ");
+			uart_send_int(st);
+			uart_send_char('\n');
+			if (st & NRF24_RX_DR)
 			{
-				uart_send_str("Read.. ");
-				cfg = nrf24_read_register(NRF24_REGISTER_CONFIG);
-				st = nrf24_read_status();
-				rf = nrf24_read_register(NRF24_REGISTER_OBSERVE_TX);
-				uart_send_str("cfg: ");
-				uart_send_int(cfg);
-				uart_send_str(" status: ");
-				uart_send_int(st);
-				uart_send_char('\n');
-				if (st & NRF24_RX_DR)
-				{
-					nrf24_write_register(NRF24_REGISTER_STATUS, st);
-				}
+				nrf24_clear_status();
 			}
 			_delay_ms(10);
 		}

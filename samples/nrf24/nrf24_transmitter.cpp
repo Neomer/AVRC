@@ -35,7 +35,8 @@ int main()
 {
 	uart_init(UART_BAUD_8MHz_38400);
 	nrf24_init();
-	nrf24_config(sizeof(uint8_t), 2);
+	nrf24_set_data_length(0, sizeof(uint8_t));
+	
 
 	__setLow(DDRD, 7);
 	__setHigh(PORTD, 7);

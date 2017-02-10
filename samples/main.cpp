@@ -33,7 +33,6 @@ int main()
 {
 	uart_init(UART_BAUD_8MHz_38400);
 	nrf24_init();
-	nrf24_config(sizeof(uint8_t), 2);
 	
 	uint8_t b;
 	
