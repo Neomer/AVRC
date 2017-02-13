@@ -93,11 +93,11 @@
 #define NRF24_REGISTER_RX_PW_P4         0x15 // Number of bytes in RX payload in data pipe 4
 #define NRF24_REGISTER_RX_PW_P5         0x16 // Number of bytes in RX payload in data pipe 5
 #define NRF24_REGISTER_FIFO_STATUS		0x17 // FIFO Status Register
-#define NRF24_TX_REUSE					6
-#define NRF24_TX_FULL					5
-#define NRF24_TX_EMPTY					4
-#define NRF24_RX_FULL					1
-#define NRF24_RX_EMPTY					0
+#define		NRF24_FIFO_STATUSTX_REUSE	6
+#define		NRF24_FIFO_STATUSTX_FULL	5
+#define		NRF24_FIFO_STATUSTX_EMPTY	4
+#define		NRF24_FIFO_STATUSRX_FULL	1
+#define		NRF24_FIFO_STATUSRX_EMPTY	0
 #define NRF24_REGISTER_DYNPD			0x1C // Enable dynamic payload length
 #define NRF24_DPL_P0					0
 #define NRF24_DPL_P1					1
@@ -132,23 +132,33 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include "../MemMath.h"
-#include "../abstract/spi.h"
-#include "../abstract/uart.h"
+#include "../interface/spi.h"
+#include "../interface/uart.h"
 
-//inline void nrf24_init();
-//inline void nrf24_config(uint8_t dataLength, uint8_t channel);
-//inline uint8_t nrf24_read_register(uint8_t address);
-//inline void nrf24_write_register(uint8_t address, uint8_t value);
-//inline void nrf24_prepare_tx();
-//inline void nrf24_prepare_rx();
-//inline void nrf24_send_char(uint8_t data);
-//inline bool nrf24_has_data(void);
-//inline void nrf24_config_register( uint8_t address, uint8_t data );
-//inline uint8_t nrf24_read_status();
-//inline void nrf24_send_data(uint8_t *data, uint8_t length);
-//inline void nrf24_read_char( uint8_t *buffer);
-//inline void nrf24_read_array( uint8_t *buffer, uint8_t length);
-
+inline void nrf24_init();
+inline void nrf24_config(uint8_t dataLength, uint8_t channel);
+inline uint8_t nrf24_read_register(uint8_t address);
+inline void nrf24_write_register(uint8_t address, uint8_t value);
+inline void nrf24_prepare_tx();
+inline void nrf24_prepare_rx();
+inline void nrf24_send_char(uint8_t data);
+inline bool nrf24_has_data(void);
+inline void nrf24_config_register( uint8_t address, uint8_t data );
+inline uint8_t nrf24_read_status();
+inline void nrf24_send_data(uint8_t *data, uint8_t length);
+inline void nrf24_read_char( uint8_t *buffer);
+inline void nrf24_read_array( uint8_t *buffer, uint8_t length);
+inline void nrf24_set_retransmission_count(uint8_t delay, uint8_t count);
+inline void nrf24_set_address_width(uint8_t length);
+inline void nrf24_set_data_rate(uint8_t rate);
+inline void nrf24_set_output_power(uint8_t power);
+inline void nrf24_set_rx_enable(uint8_t pipes);
+inline void nrf24_set_auto_ack(uint8_t pipes);
+inline void nrf24_set_data_length(uint8_t pipe, uint8_t length);
+inline void nrf24_set_channel(uint8_t channel);
+inline void nrf24_clear_status();
+inline void nrf24_flush_tx();
+inline void nrf24_flush_rx();
 
 inline uint8_t nrf24_read_status()
 {
@@ -316,31 +326,30 @@ inline void nrf24_init()
 	nrf24_set_channel(74);
 	nrf24_set_address_width(NRF24_AW_5);
 	nrf24_set_retransmission_count(10, 5);
-	nrf24_set
 	
 	nrf24_write_register(NRF24_REGISTER_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT);
 	nrf24_write_register(NRF24_REGISTER_RX_ADDR_P0, 43);
 	nrf24_write_register(NRF24_REGISTER_TX_ADDR, 43);
 }
 
-inline nrf24_set_channel(uint8_t channel)
+inline void nrf24_set_channel(uint8_t channel)
 {
 	nrf24_write_register(NRF24_REGISTER_RF_CH, channel);
 	_delay_ms(5);
 }
 
-inline nrf24_set_data_length(uint8_t pipe, uint8_t length)
+inline void nrf24_set_data_length(uint8_t pipe, uint8_t length)
 {
 	nrf24_write_register(NRF24_REGISTER_RX_PW_P0 + pipe, length);
 	_delay_ms(5);
 }
 
-inline nrf24_set_auto_ack(uint8_t pipes)
+inline void nrf24_set_auto_ack(uint8_t pipes)
 {
 	nrf24_write_register(NRF24_REGISTER_EN_AA, pipes);
 }
 
-inline nrf24_set_rx_enable(uint8_t pipes)
+inline void nrf24_set_rx_enable(uint8_t pipes)
 {
 	nrf24_write_register(NRF24_REGISTER_EN_RXADDR, pipes);
 }

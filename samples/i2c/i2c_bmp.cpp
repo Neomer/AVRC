@@ -1,6 +1,6 @@
 #define F_CPU	8000000UL
 
-#include <abstract/uart.h>
+#include <interface/uart.h>
 #include <sensors/bmp280.h>
 #include <util/twi.h>
 

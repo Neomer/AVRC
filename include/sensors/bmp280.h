@@ -5,9 +5,9 @@
 #include <util/delay.h> 
 #include <stdio.h>
 
-#include <abstract/i2c.h>
-#include <abstract/spi.h>
-#include <abstract/uart.h>
+#include <interface/i2c.h>
+#include <interface/spi.h>
+#include <interface/uart.h>
 
 #ifndef BMP280_SDO
 #define BMP280_SDO					0x01

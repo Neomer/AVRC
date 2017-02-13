@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #include <MemMath.h>
-#include <abstract/uart.h>
+#include <interface/uart.h>
 #include <actors/led_c.h>
 
 #define  SPI_PORT			PORTB
@@ -53,11 +53,59 @@ int main()
 			cfg = nrf24_read_register(NRF24_REGISTER_CONFIG);
 			st = nrf24_read_status();
 			rf = nrf24_read_register(NRF24_REGISTER_OBSERVE_TX);
-			uart_send_str("cfg: ");
+			uart_send_str("Config: ");
 			uart_send_int(cfg);
-			uart_send_str(" status: ");
+			if (__bitIsHigh(cfg, NRF24_MASK_RX_DR))
+				uart_send_str("\n   RX_DR: ON");
+			else
+				uart_send_str("\n   RX_DR: OFF");
+			if (__bitIsHigh(cfg, NRF24_MASK_TX_DS))
+				uart_send_str("\n   TX_DS: ON");
+			else
+				uart_send_str("\n   TX_DS: OFF");
+			if (__bitIsHigh(cfg, NRF24_MASK_MAX_RT))
+				uart_send_str("\n   MAX_RT: ON");
+			else
+				uart_send_str("\n   MAX_RT: OFF");
+			if (__bitIsHigh(cfg, NRF24_EN_CRC))
+				uart_send_str("\n   EN_CRC: ON");
+			else
+				uart_send_str("\n   EN_CRC: OFF");
+			if (__bitIsHigh(cfg, NRF24_CRCO))
+				uart_send_str("\n   CRCO: ON");
+			else
+				uart_send_str("\n   CRCO: OFF");
+			if (__bitIsHigh(cfg, NRF24_PWR_UP))
+				uart_send_str("\n   PWR_UP: ON");
+			else
+				uart_send_str("\n   PWR_UP: OFF");
+			if (__bitIsHigh(cfg, NRF24_PRIM_RX))
+				uart_send_str("\n   PRIM_RX: ON");
+			else
+				uart_send_str("\n   PRIM_RX: OFF");
+			
+			uart_send_str("\nStatus: ");
 			uart_send_int(st);
-			uart_send_str(" Packets lost: ");
+			if (__bitIsHigh(st, NRF24_RX_DR))
+				uart_send_str("\n   RX_DR: ON");
+			else
+				uart_send_str("\n   RX_DR: OFF");
+			if (__bitIsHigh(st, NRF24_TX_DS))
+				uart_send_str("\n   TX_DS: ON");
+			else
+				uart_send_str("\n   TX_DS: OFF");
+			if (__bitIsHigh(st, NRF24_MAX_RT))
+				uart_send_str("\n   MAX_RT: ON");
+			else
+				uart_send_str("\n   MAX_RT: OFF");
+			uart_send_str("\n   RX_PIPE: ");
+			uart_send_int((st & NRF24_RX_PIPE_MASK) >> NRF24_RX_PIPE);
+			if (__bitIsHigh(st, NRF24_TX_FULL0))
+				uart_send_str("\n   TX_FULL0: ON");
+			else
+				uart_send_str("\n   TX_FULL0: OFF");
+			
+			uart_send_str("\nTransimission state: Packets lost: ");
 			uart_send_int((rf & NRF24_PLOS_CNT_MASK) >> 4);
 			uart_send_str(" retransmitted: ");
 			uart_send_int((rf & NRF24_ARC_CNT_MASK));

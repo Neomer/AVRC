@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include <abstract/uart.h>
+#include <interface/uart.h>
 
 #include <stdlib.h>
 #include <string.h>

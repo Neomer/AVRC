@@ -8,8 +8,8 @@
 #define  SPI_MISO			4
 
 
-#include <abstract/spi.h>
-#include <abstract/uart.h>
+#include <interface/spi.h>
+#include <interface/uart.h>
 #include <sensors/bmp280.h>
 
 int main( void )

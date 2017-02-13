@@ -5,7 +5,7 @@
 #ifdef __AVRC_INTERRUPTION_ENABLED__
 
 
-#include "../../abstract/UART.h"
+#include "../../interface/uart.h"
 
 class UART : public iUART
 {

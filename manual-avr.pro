@@ -39,12 +39,12 @@ HEADERS += \
     include/dev/m8/UARTM8.h \
     include/abstract/Timer.h \
     include/abstract/Bit.h \
-    include/abstract/uart.h \
+    include/interface/uart.h \
     include/abstract/Queue.h \
     include/connectors/nRF24L01.h \
-    include/abstract/spi.h \
+    include/interface/spi.h \
     include/actors/led_c.h \
     include/sensors/bmp280.h \
-    include/abstract/i2c.h
+    include/interface/i2c.h
 
 INCLUDEPATH += include
