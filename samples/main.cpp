@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #include <MemMath.h>
-#include <abstract/uart.h>
+#include <interface/uart.h>
 #include <actors/led_c.h>
 
 #define  SPI_PORT			PORTB

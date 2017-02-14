@@ -12,7 +12,8 @@ SOURCES += samples/main.cpp \
     samples/i2c/i2c_bmp.cpp \
     samples/nrf24/nrf24_2.cpp \
     samples/spi/spi_master.cpp \
-    samples/spi/spi_slave.cpp
+    samples/spi/spi_slave.cpp \
+    samples/uart/uart.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \

@@ -78,13 +78,18 @@ inline void bmp280_spi_init()
 
 inline void bmp280_spi_register_write( uint8_t address, uint8_t value)
 {
+	spi_ss_low;
 	spi_fast_exchage(address & BMP280_W_REGISTER);
 	spi_fast_exchage(value);
+	spi_ss_high;
 }
 
 inline uint8_t bmp280_spi_register_read( uint8_t address )
 {
-	uint8_t ret = spi_fast_exchage(address | BMP280_R_REGISTER);
+	spi_ss_low;
+	spi_fast_exchage(address | BMP280_R_REGISTER);
+	uint8_t ret = spi_fast_exchage(0xff);
+	spi_ss_high;
 	return ret;
 }
 #endif
