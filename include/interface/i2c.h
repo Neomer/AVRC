@@ -7,9 +7,9 @@
 #include <avr/io.h>
 #include <util/twi.h>
 #include <util/delay.h>
-#include <abstract/uart.h>
+#include <interface/uart.h>
 
-#define i2c_waitFlag		while(!(TWCR & (1<<TWINT)))
+#define i2c_waitFlag			while(!(TWCR & (1<<TWINT)))
 
 #define I2C_IC_ADDRESS			0xE6
 
