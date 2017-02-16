@@ -46,6 +46,7 @@ HEADERS += \
     include/interface/spi.h \
     include/actors/led_c.h \
     include/sensors/bmp280.h \
-    include/interface/i2c.h
+    include/interface/i2c.h \
+    include/sensors/ds1307.h
 
 INCLUDEPATH += include
