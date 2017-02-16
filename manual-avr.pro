@@ -47,6 +47,7 @@ HEADERS += \
     include/actors/led_c.h \
     include/sensors/bmp280.h \
     include/interface/i2c.h \
-    include/sensors/ds1307.h
+    include/sensors/ds1307.h \
+    include/MemMath.h
 
 INCLUDEPATH += include
