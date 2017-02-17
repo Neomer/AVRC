@@ -8,7 +8,8 @@ All code wrote in .h headers files, so .HEX size has minimal difference with pla
 
 Library grants easy access to: UART, SPI, I2C (TWI), LED manipulations, Bit mathematics.
 
-Supported devices: 
+Supported devices:
+
 *nRF24L01+ 
 *DS1307
 
