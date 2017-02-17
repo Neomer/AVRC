@@ -3,9 +3,9 @@
 
 #include "../MemMath.h"
 
-#define led(DDR, BIT)					__setHigh(DDR, BIT)
-#define led_turn_on(PORT, BIT)			__setHigh(PORT, BIT)
-#define led_turn_off(PORT, BIT)			__setLow(PORT, BIT)
+#define led(DDR, BIT)					setHigh(DDR, BIT)
+#define led_turn_on(PORT, BIT)			setHigh(PORT, BIT)
+#define led_turn_off(PORT, BIT)			setLow(PORT, BIT)
 
 #endif // LED_C
 

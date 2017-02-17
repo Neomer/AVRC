@@ -10,12 +10,12 @@ int main( void )
 	bmp280_i2c_init(72);
 	uart_init(UART_BAUD_8MHz_38400);
 	
-	__setLow(DDRB, 0);
-	__setHigh(PORTB, 0);
+	setLow(DDRB, 0);
+	setHigh(PORTB, 0);
 	
 	while (1)
 	{
-		if (__bitIsLow(PINB, 0))
+		if (bitIsLow(PINB, 0))
 		{
 			uart_send_char('#');
 			uint8_t reg = bmp280_i2c_register_read(BMP280_REG_CHIPID);

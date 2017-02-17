@@ -7,26 +7,26 @@
 
 inline void led_on( void )
 {
-	__setHigh(TCCR2, 0);
+	setHigh(TCCR2, 0);
 	for (int i = 0; i < 255; i++)
 	{
 		OCR2 = i;
 		_delay_ms(50);
 	}
 	OCR2 = 0xff;
-	__setLow(TCCR2, 0);
+	setLow(TCCR2, 0);
 }
 
 inline void led_off( void )
 {
-	__setHigh(TCCR2, 0);
+	setHigh(TCCR2, 0);
 	for (int i = 254; i >= 0; i--)
 	{
 		OCR2 = i;
 		_delay_ms(50);
 	}
 	OCR2 = 0;
-	__setLow(TCCR2, 0);			
+	setLow(TCCR2, 0);			
 }
 
 int main()
@@ -35,26 +35,26 @@ int main()
 	//TCNT2 = 0x00;
 	//OCR2  = 0x00;
 	
-	__setHigh(DDRB, 3);
+	setHigh(DDRB, 3);
 	
-	__setLow(DDRC, 5);
-	__setLow(PORTC, 5);
+	setLow(DDRC, 5);
+	setLow(PORTC, 5);
 	
-	__setLow(DDRB, 2);
-	__setLow(PORTB, 2);
+	setLow(DDRB, 2);
+	setLow(PORTB, 2);
 	
 	bool isLight = false;
 	
 	while (1)
 	{
-		if (__bitIsLow(PINB, 2))
+		if (bitIsLow(PINB, 2))
 		{
 			led_turn_off(PORTB, 3);
 			isLight = false;
 		}
 		else 
 		{
-			if (__bitIsHigh(PINC, 5))
+			if (bitIsHigh(PINC, 5))
 			{
 				if ((!isLight))
 				{

@@ -37,8 +37,8 @@ int main()
 	nrf24_init();
 	nrf24_config(sizeof(uint8_t), 2);
 	
-	__setLow(DDRD, 7);
-	__setHigh(PORTD, 7);
+	setLow(DDRD, 7);
+	setHigh(PORTD, 7);
 	
 	//uint8_t data[32];
 	uint8_t cfg, st, rf;
@@ -47,7 +47,7 @@ int main()
 
 	while (1)
 	{
-		if (__bitIsLow(PIND, 7))
+		if (bitIsLow(PIND, 7))
 		{
 			uart_send_str("Read.. ");
 			cfg = nrf24_read_register(NRF24_REGISTER_CONFIG);

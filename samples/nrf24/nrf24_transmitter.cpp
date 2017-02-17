@@ -38,14 +38,14 @@ int main()
 	nrf24_set_data_length(0, sizeof(uint8_t));
 	
 
-	__setLow(DDRD, 7);
-	__setHigh(PORTD, 7);
+	setLow(DDRD, 7);
+	setHigh(PORTD, 7);
 	
 	uint8_t b;
 	uint8_t cfg, st, rf;
 	while (1)
 	{
-		if (__bitIsLow(PIND, 7))
+		if (bitIsLow(PIND, 7))
 		{
 			uart_send_str("Send.. ");
 			nrf24_send_char('#');
@@ -56,32 +56,32 @@ int main()
 			uart_send_str("Config: ");
 			uart_send_int(cfg);
 			uart_send_str("\n   RX_DR: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_MASK_RX_DR));
+			uart_send_char(bitIsHigh(cfg, NRF24_MASK_RX_DR));
 			uart_send_str("\n   TX_DS: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_MASK_TX_DS));
+			uart_send_char(bitIsHigh(cfg, NRF24_MASK_TX_DS));
 			uart_send_str("\n   MAX_RT: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_MASK_MAX_RT));
+			uart_send_char(bitIsHigh(cfg, NRF24_MASK_MAX_RT));
 			uart_send_str("\n   EN_CRC: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_EN_CRC));
+			uart_send_char(bitIsHigh(cfg, NRF24_EN_CRC));
 			uart_send_str("\n   CRCO: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_CRCO));
+			uart_send_char(bitIsHigh(cfg, NRF24_CRCO));
 			uart_send_str("\n   PWR_UP: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_PWR_UP));
+			uart_send_char(bitIsHigh(cfg, NRF24_PWR_UP));
 			uart_send_str("\n   PRIM_RX: ");
-			uart_send_char(__bitIsHigh(cfg, NRF24_PRIM_RX));
+			uart_send_char(bitIsHigh(cfg, NRF24_PRIM_RX));
 
 			uart_send_str("\nStatus: ");
 			uart_send_int(st);
 			uart_send_str("\n   RX_DR: ");
-			uart_send_char(__bitIsHigh(st, NRF24_RX_DR));
+			uart_send_char(bitIsHigh(st, NRF24_RX_DR));
 			uart_send_str("\n   TX_DS: ");
-			uart_send_char(__bitIsHigh(st, NRF24_TX_DS));
+			uart_send_char(bitIsHigh(st, NRF24_TX_DS));
 			uart_send_str("\n   MAX_RT: ");
-			uart_send_char(__bitIsHigh(st, NRF24_MAX_RT));
+			uart_send_char(bitIsHigh(st, NRF24_MAX_RT));
 			uart_send_str("\n   RX_PIPE: ");
 			uart_send_int((st & NRF24_RX_PIPE_MASK) >> NRF24_RX_PIPE);
 			uart_send_str("\n   TX_FULL0: ");
-			uart_send_char(__bitIsHigh(st, NRF24_TX_FULL0));
+			uart_send_char(bitIsHigh(st, NRF24_TX_FULL0));
 			
 			uart_send_str("\nTransimission state: Packets lost: ");
 			uart_send_int((rf & NRF24_PLOS_CNT_MASK) >> 4);

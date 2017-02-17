@@ -48,6 +48,8 @@ HEADERS += \
     include/sensors/bmp280.h \
     include/interface/i2c.h \
     include/sensors/ds1307.h \
-    include/MemMath.h
+    include/MemMath.h \
+    include/core/DateTime.h \
+    include/core/BCD.h
 
 INCLUDEPATH += include

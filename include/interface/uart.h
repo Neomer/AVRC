@@ -56,7 +56,7 @@ inline void uart_init( uint16_t baudRate,
 
 inline void uart_send_char(char data)
 {
-	while (__bitIsLow(UCSRA, UART_READY_TO_SEND));
+	while (bitIsLow(UCSRA, UART_READY_TO_SEND));
 	UDR = data;
 }
 
@@ -64,7 +64,7 @@ inline void uart_send_array(const char *data, uint8_t size)
 {
 	for (uint8_t p = 0 ; p < size; p++)
 	{	
-		while (__bitIsLow(UCSRA, UART_READY_TO_SEND));
+		while (bitIsLow(UCSRA, UART_READY_TO_SEND));
 		UDR = data[p];
 	}
 }
@@ -73,7 +73,7 @@ inline void uart_send_str(const char *data)
 {
 	for (uint8_t p = 0 ; data[p] != 0; p++)
 	{	
-		while (__bitIsLow(UCSRA, UART_READY_TO_SEND));
+		while (bitIsLow(UCSRA, UART_READY_TO_SEND));
 		UDR = data[p];
 	}
 }
@@ -87,7 +87,7 @@ inline void uart_send_int(int data)
 
 inline char uart_read_char()
 {
-	while (__bitIsLow(UCSRA, RXC));
+	while (bitIsLow(UCSRA, RXC));
 	return UDR;
 }
 

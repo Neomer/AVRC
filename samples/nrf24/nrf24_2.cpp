@@ -28,9 +28,9 @@
 
 
 // Переводит порт в режим чтения/записи
-#define spi_ss_low			__setLow(SPI_PORT, SPI_SS)
-#define spi_ss_high			__setHigh(SPI_PORT, SPI_SS)
-#define spi_wait_status		__waitHigh(SPSR, SPIF);
+#define spi_ss_low			setLow(SPI_PORT, SPI_SS)
+#define spi_ss_high			setHigh(SPI_PORT, SPI_SS)
+#define spi_wait_status		waitHigh(SPSR, SPIF);
 
 
 void spi_init_master( void )
@@ -55,8 +55,8 @@ int main()
 	uart_init(UART_BAUD_8MHz_9600);
 	spi_init_master();
 	
-	__setLow(DDRD, 7);
-	__setHigh(PORTD, 7);
+	setLow(DDRD, 7);
+	setHigh(PORTD, 7);
 	
 	volatile uint8_t b;
 	volatile bool fl;
@@ -64,7 +64,7 @@ int main()
 	volatile uint8_t spsr;
 	while (1)
 	{
-		if (__bitIsLow(PIND, 7))
+		if (bitIsLow(PIND, 7))
 		{
 			uart_send_str("status: ");
 			spi_ss_low;

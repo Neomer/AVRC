@@ -19,7 +19,7 @@ int main( void )
 	bmp280_register_write(BMP280_REG_RESET, BMP280_POWER_ON_RESET);
 	_delay_ms(100);
 	uint8_t cfg = bmp280_register_read(BMP280_REG_CONFIG);
-	__setHigh(cfg, 0);
+	setHigh(cfg, 0);
 	bmp280_register_write(BMP280_REG_CONFIG, cfg);
 	_delay_ms(100);
 	

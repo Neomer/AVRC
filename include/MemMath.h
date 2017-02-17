@@ -1,16 +1,16 @@
 #ifndef MEMMATH
 #define MEMMATH
 
-#define __bitIsHigh(address, bit)		(address & (1 << bit))
-#define __bitIsLow(address, bit)		(address & (1 << bit)) == 0
+#define bitIsHigh(address, bit)		(address & (1 << bit))
+#define bitIsLow(address, bit)		(address & (1 << bit)) == 0
 
-#define __setHigh(address, bit)		address |= 1 << bit
-#define __setLow(address, bit)		address &= ~(1 << bit)
+#define setHigh(address, bit)		address |= 1 << bit
+#define setLow(address, bit)		address &= ~(1 << bit)
 
-#define  __swapBit(address, bit)	address ^= (1<<(bit))
+#define  swapBit(address, bit)	address ^= (1<<(bit))
 
-#define  __waitHigh(address, bit)	while (__bitIsLow(address, bit));
-#define  __waitLow(address, bit)	while (__bitIsHigh(address, bit));
+#define  waitHigh(address, bit)	while (bitIsLow(address, bit));
+#define  waitLow(address, bit)	while (bitIsHigh(address, bit));
 
 #endif // MEMMATH
 

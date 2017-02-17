@@ -1,5 +1,8 @@
 clear
 
+rm main.o
+rm min_lib.o
+
 echo Compiling simple C code main.cpp
 echo
 
