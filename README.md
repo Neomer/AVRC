@@ -11,6 +11,7 @@ Library grants easy access to: UART, SPI, I2C (TWI), LED manipulations, Bit math
 Supported devices:
 - nRF24L01+
 - DS1307
+- DHT11
 
 Currently in progress: ESP8266, BMP180, BMP280
 	
