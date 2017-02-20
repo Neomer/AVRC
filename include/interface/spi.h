@@ -12,15 +12,15 @@
 #define AVRC_SPI
 
 // Переводит порт в режим чтения/записи
-#define spi_ss_low			__setLow(SPI_PORT, SPI_SS)
-#define spi_ss_high			__setHigh(SPI_PORT, SPI_SS)
-#define spi_wait_status		__waitHigh(SPSR, SPIF);
+#define spi_ss_low			setLow(SPI_PORT, SPI_SS)
+#define spi_ss_high			setHigh(SPI_PORT, SPI_SS)
+#define spi_wait_status		waitHigh(SPSR, SPIF);
 
 
 inline void spi_init_master( void )
 {
-	__setLow(SPI_DDR, SPI_MISO);
-	__setHigh(SPI_PORT, SPI_MISO);
+	setLow(SPI_DDR, SPI_MISO);
+	setHigh(SPI_PORT, SPI_MISO);
 	SPI_DDR |= (1<<SPI_MOSI)|(1<<SPI_SCK)|(1<<SPI_SS);
 	SPCR = (1<<SPE)|(0<<DORD)|(1<<MSTR)|(0<<CPOL)|(0<<CPHA)|(0<<SPR1)|(0<<SPR0);
 	SPSR = (1<<SPI2X);
@@ -46,13 +46,13 @@ inline uint8_t spi_exchange(uint8_t data)
 	uint8_t reply = 0;
 	for (int i=7; i>=0; i--) {
 	  reply <<= 1;
-	  __setLow(SPI_PORT, SPI_SCK);
+	  setLow(SPI_PORT, SPI_SCK);
 	  if (data & (1<<i))
-		  __setHigh(SPI_PORT, SPI_MOSI);
+		  setHigh(SPI_PORT, SPI_MOSI);
 	  else
-		  __setLow(SPI_PORT, SPI_MOSI);
-	  __setHigh(SPI_PORT, SPI_SCK);
-	  if (__bitIsHigh(SPI_PORT, SPI_MISO))
+		  setLow(SPI_PORT, SPI_MOSI);
+	  setHigh(SPI_PORT, SPI_SCK);
+	  if (bitIsHigh(SPI_PORT, SPI_MISO))
 		reply |= 1;
 	}
 	return reply;
