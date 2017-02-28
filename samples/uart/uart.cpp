@@ -9,7 +9,7 @@ int main( void )
 	
 	while (1)
 	{
-		//uart_send_char('5');
+		uart_send_char('5');
 		
 		_delay_ms(500);
 	}
