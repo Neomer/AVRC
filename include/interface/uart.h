@@ -32,7 +32,7 @@ enum UART_StopBits
 #define UART_BAUD_8MHz_2400		207  // ~207.33
 
 #define UART_BAUD_16MHz_115200		7	 // ~6.68
-#define UART_BAUD_16MHz_57600		8	 // ~15.36
+#define UART_BAUD_16MHz_57600		15	 // ~15.36
 #define UART_BAUD_16MHz_38400		24	 // ~24.04
 #define UART_BAUD_16MHz_19200		50	 // ~50.08
 #define UART_BAUD_16MHz_9600		102  // ~102.16
@@ -54,9 +54,9 @@ inline void uart_init( uint16_t baudRate,
 	UCSRB = (1 << RXEN) | (1 << TXEN);
 }
 
-inline void uart_send_char(char data)
+inline void uart_send_char(unsigned char data)
 {
-	while (bitIsLow(UCSRA, UART_READY_TO_SEND));
+	waitHigh(UCSRA, UART_READY_TO_SEND);
 	UDR = data;
 }
 
@@ -85,9 +85,9 @@ inline void uart_send_int(int data)
 	uart_send_str(buf);
 }
 
-inline char uart_read_char()
+inline unsigned char uart_read_char()
 {
-	while (bitIsLow(UCSRA, RXC));
+	waitHigh(UCSRA, UART_READY_TO_READ);
 	return UDR;
 }
 

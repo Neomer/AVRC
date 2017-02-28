@@ -5,11 +5,11 @@
 
 int main( void )
 {
-	uart_init(UART_BAUD_8MHz_9600);
+	uart_init(UART_BAUD_8MHz_38400);
 	
 	while (1)
 	{
-		uart_send_char('5');
+		uart_read_char()
 		
 		_delay_ms(500);
 	}
