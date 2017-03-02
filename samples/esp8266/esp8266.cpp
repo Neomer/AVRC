@@ -6,10 +6,9 @@
 
 int main( void )
 {
-	uart_init(UART_BAUD_8MHz_115200);
+	uart_init(UART_BAUD_8MHz_9600);
 	
 	uint8_t b;
-	QUEUE(10) data;
 	while (1)
 	{
 		b = uart_read_char();

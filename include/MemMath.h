@@ -7,10 +7,12 @@
 #define setHigh(address, bit)		address |= 1 << bit
 #define setLow(address, bit)		address &= ~(1 << bit)
 
-#define  swapBit(address, bit)	address ^= (1<<(bit))
-
 #define  waitHigh(address, bit)	while (bitIsLow(address, bit));
 #define  waitLow(address, bit)	while (bitIsHigh(address, bit));
+
+#define  swapBit(address, bit)	address ^= (1<<(bit))
+
+
 
 #endif // MEMMATH
 

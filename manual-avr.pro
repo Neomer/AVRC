@@ -14,7 +14,10 @@ SOURCES += samples/main.cpp \
     samples/spi/spi_master.cpp \
     samples/spi/spi_slave.cpp \
     samples/uart/uart.cpp \
-    samples/esp8266/esp8266.cpp
+    samples/esp8266/esp8266.cpp \
+    samples/ir/tsop34338.cpp \
+    samples/ir/nec_receiver.cpp \
+    samples/ir/nec_sender.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ \
