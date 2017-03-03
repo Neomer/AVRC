@@ -52,9 +52,9 @@ ISR(INT0_vect)
 		
 		uart_send_int(dt);
 		uart_send_char(' ');
-		tsave = ts;
+//		tsave = ts;
 		
-		return;
+//		return;
 		
 	
 		if (dt >= 67)
@@ -65,18 +65,18 @@ ISR(INT0_vect)
 		{
 			if ((dt >= 16)&&(dt <= 18))
 			{
-				uart_send_char('1');
+				//uart_send_char('1');
 				val |= 1 << bit;
 			}
 			else if ((dt >= 8)&&(dt <= 10)) 
 			{
-				uart_send_char('0');
+				//uart_send_char('0');
 			}
 			else
 			{
-				uart_send_str(" (");
-				uart_send_int(dt);
-				uart_send_str(" )");
+//				uart_send_str(" (");
+//				uart_send_int(dt);
+//				uart_send_str(" )");
 			}
 			if (bit == 7)
 			{

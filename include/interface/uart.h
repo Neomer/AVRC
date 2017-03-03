@@ -60,10 +60,13 @@ inline void uart_send_char(unsigned char data)
 	UDR = data;
 }
 
-inline void uart_send_array(const char *data, uint8_t size)
+inline void uart_send_array(uint8_t *data, uint8_t size)
 {
 	for (uint8_t p = 0 ; p < size; p++)
 	{	
+		if (data[p] == '\n')
+			continue;
+		
 		while (bitIsLow(UCSRA, UART_READY_TO_SEND));
 		UDR = data[p];
 	}
@@ -89,6 +92,15 @@ inline unsigned char uart_read_char()
 {
 	waitHigh(UCSRA, UART_READY_TO_READ);
 	return UDR;
+}
+
+inline void uart_read_array(uint8_t *buffer, uint8_t size)
+{
+	for(uint8_t i = 0; i < size; i++)
+	{
+		waitHigh(UCSRA, UART_READY_TO_READ);
+		*(buffer++) = UDR;
+	}
 }
 
 #endif // UART_H

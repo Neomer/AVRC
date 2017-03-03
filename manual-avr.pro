@@ -54,6 +54,8 @@ HEADERS += \
     include/sensors/ds1307.h \
     include/MemMath.h \
     include/core/DateTime.h \
-    include/core/BCD.h
+    include/core/BCD.h \
+    include/abstract/FIFO.h \
+    include/abstract/nec.h
 
 INCLUDEPATH += include
