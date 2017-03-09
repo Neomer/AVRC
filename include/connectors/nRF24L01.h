@@ -14,9 +14,9 @@
 	#define SPI_DDR_IRQ			0
 #endif
 
-#define nrf24_ce_low		__setLow(SPI_PORT_CE, SPI_CE)
-#define nrf24_ce_high		__setHigh(SPI_PORT_CE, SPI_CE)
-#define nrf24_irq			__bitIsHigh(SPI_PIN_IRQ, SPI_IRQ)
+#define nrf24_ce_low		setLow(SPI_PORT_CE, SPI_CE)
+#define nrf24_ce_high		setHigh(SPI_PORT_CE, SPI_CE)
+#define nrf24_irq			bitIsHigh(SPI_PIN_IRQ, SPI_IRQ)
 
 
 
@@ -294,7 +294,7 @@ inline void nrf24_read_array( uint8_t *buffer, uint8_t length)
 inline bool nrf24_has_data( void )
 {	
 	uint8_t st = nrf24_read_status();
-	return __bitIsHigh(st, NRF24_RX_DR) || (((st & NRF24_RX_PIPE_MASK) >> NRF24_RX_PIPE) != NRF24_RX_EMPTY);
+	return bitIsHigh(st, NRF24_RX_DR) || (((st & NRF24_RX_PIPE_MASK) >> NRF24_RX_PIPE) != NRF24_RX_EMPTY);
 }
 
 inline void nrf24_flush_tx()
@@ -315,8 +315,8 @@ inline void nrf24_init()
 {
 	spi_init_master();
 	
-	__setHigh(SPI_DDR_CE, SPI_CE);
-	__setLow(SPI_DDR_IRQ, SPI_IRQ);
+	setHigh(SPI_DDR_CE, SPI_CE);
+	setLow(SPI_DDR_IRQ, SPI_IRQ);
 	
 	nrf24_ce_low;
 
