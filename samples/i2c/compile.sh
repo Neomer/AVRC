@@ -4,7 +4,7 @@ rm firmware.o
 rm firmware.hex
 
 echo Compiling...
-avr-gcc -mmcu=atmega8 -Os -o firmware.o i2c_bmp.cpp -I ../../include
+avr-gcc -mmcu=atmega8 -Os -o firmware.o slave.cpp -I ../../include
 avr-objcopy -O ihex firmware.o firmware.hex
 
 avr-size --mcu=atmega8 --format=avr firmware.o

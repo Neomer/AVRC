@@ -19,12 +19,14 @@ SOURCES += samples/main.cpp \
     samples/ir/nec_receiver.cpp \
     samples/ir/nec_sender.cpp \
     samples/pwm/led2.cpp \
-    samples/ir/hall.cpp
+    samples/ir/hall.cpp \
+    samples/i2c/i2c_uart.cpp \
+    samples/i2c/slave.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
-	   __AVRC_INTERRUPTION_ENABLED__ /*\
-	   __AVR_ATmega8__ \*/
-	   __AVR_ATtiny13__
+	   __AVRC_INTERRUPTION_ENABLED__ /
+	   __AVR_ATmega8__/* \
+	   __AVR_ATtiny13__*/
 
 DISTFILES += \
     samples/compile.sh \
