@@ -1,7 +1,8 @@
 QT = 
 
 INCLUDEPATH += /usr/lib/avr/include \
-	       "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include"
+	       "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include" \
+		include
 
 SOURCES += samples/main.cpp \  
     samples/main_lib.cpp \
@@ -21,13 +22,14 @@ SOURCES += samples/main.cpp \
     samples/pwm/led2.cpp \
     samples/ir/hall.cpp \
     samples/i2c/i2c_uart.cpp \
-    samples/i2c/slave.cpp
+    samples/i2c/slave.cpp \
+    samples/i2c/master.cpp \
+    samples/i2c/interrupt.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ /
-	   __AVR_ATmega8__/* \
+	   __AVR_ATmega8__ * \/
 	   __AVR_ATtiny13__*/
-
 DISTFILES += \
     samples/compile.sh \
     samples/nrf24/compile_nrf24.sh
@@ -61,6 +63,6 @@ HEADERS += \
     include/core/DateTime.h \
     include/core/BCD.h \
     include/abstract/FIFO.h \
-    include/abstract/nec.h
+    include/abstract/nec.h \
+    include/interface/i2c_soft.h
 
-INCLUDEPATH += include

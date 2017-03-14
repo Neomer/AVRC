@@ -14,6 +14,8 @@
 #define I2C_IC_ADDRESS			0xE6
 
 #define I2C_STATUS_MASK					0xF8
+#define I2C_STATUS_BUS_ERROR			0x00
+
 #define I2C_STATUS_MT_START				0x08
 #define I2C_STATUS_MT_REPSTART			0x10
 #define I2C_STATUS_MT_ARB_LOST			0x38
@@ -25,14 +27,18 @@
 #define I2C_STATUS_MT_RX_DATA_NACK		0x58
 #define I2C_STATUS_MT_RX_ADR_ACK		0x40
 #define I2C_STATUS_MT_RX_ADR_NACK		0x48
-#define I2C_STATUS_MT_BUS_ERROR			0x00
 
 #define I2C_STATUS_SR_RX_ADR_ACK		0x60
 #define I2C_STATUS_SR_RX_ADR_NACK		0x68
 #define I2C_STATUS_SR_RX_DATA_ACK		0x80
 #define I2C_STATUS_SR_RX_DATA_NACK		0x88
 #define I2C_STATUS_SR_RX_STOP_RESTART	0xA0
-#define I2C_STATUS_SR_BUS_ERROR			0x00
+
+#define I2C_STATUS_ST_ADR_ACK			TW_ST_SLA_ACK
+#define I2C_STATUS_ST_ADR_NACK			TW_ST_ARB_LOST_SLA_ACK
+#define I2C_STATUS_ST_DATA_ACK			TW_ST_DATA_ACK
+#define I2C_STATUS_ST_DATA_NACK			TW_ST_DATA_NACK
+#define I2C_STATUS_ST_LAST_DATA			TW_ST_LAST_DATA
 
 
 #define I2C_SPEED_4MHz_100KHz		16
@@ -68,6 +74,7 @@ inline void i2c_init_slave(uint8_t speed, uint8_t address)
 
 inline uint8_t i2c_start()
 {
+	uart_send_char('S');
 	TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
     while(!(TWCR & (1<<TWINT)));
 	return TWSR;
@@ -89,15 +96,19 @@ inline bool i2c_open_write(uint8_t address)
 
 inline void i2c_write_byte(uint8_t data)
 {	
+	uart_send_char('>');
+	uart_send_int(data);
 	TWDR = data;
 	TWCR = (1<<TWINT) | (1<<TWEN); 
 	i2c_waitFlag;
 }
 
-inline void i2c_write_data(uint8_t *data, uint8_t length)
+inline void i2c_write_array(uint8_t *data, uint8_t length)
 {
 	while (length--)
 	{
+		uart_send_char('>');
+		uart_send_int(*data);
 		TWDR = *(data++);
 		TWCR = (1<<TWINT) | (1<<TWEN); 
 		i2c_waitFlag;
@@ -130,12 +141,15 @@ inline void i2c_read_data(uint8_t *data, uint8_t length)
 		TWCR = (1<<TWINT)|(1<<TWEA)|(1<<TWEN);
 		i2c_waitFlag;
 		*(data++) = TWDR;
+		uart_send_char('<');
+		
 	}
 }
 
 
 inline void i2c_stop()
 {
+	uart_send_char('E');
 	TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN); 
 }
 
