@@ -1,28 +1,28 @@
 #define F_CPU	8000000UL
 
 #include <interface/uart.h>
-#include <sensors/bmp280.h>
-#include <util/twi.h>
+#include <interface/i2c.h>
 
 int main( void )
 {
-	// 50000 speed
-	bmp280_i2c_init(72);
+	i2c_init_master(I2C_SPEED_8MHz_400KHz);
 	uart_init(UART_BAUD_8MHz_38400);
 	
-	setLow(DDRB, 0);
-	setHigh(PORTB, 0);
-	
+	uart_send_str("start\n");
+	volatile uint8_t t;
 	while (1)
 	{
-		if (bitIsLow(PINB, 0))
-		{
-			uart_send_char('#');
-			uint8_t reg = bmp280_i2c_register_read(BMP280_REG_CHIPID);
-			if (reg)
-				uart_send_char(reg);
-			_delay_ms(1000);
-		}
+		i2c_start();
+		i2c_open_write(0x77);
+		i2c_write_byte(0xD0);
+		i2c_start();
+		i2c_open_read(0x77);
+		t = i2c_read_byte();
+		i2c_stop();
+		uart_send_int(t);
+		uart_send_char(' ');
+		_delay_ms(2000);
+
 	}
 	
 	return 0;

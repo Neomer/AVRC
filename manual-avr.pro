@@ -28,8 +28,8 @@ SOURCES += samples/main.cpp \
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ /
-	   __AVR_ATmega8__ * \/
-	   __AVR_ATtiny13__*/
+	   __AVR_ATmega8__ 
+
 DISTFILES += \
     samples/compile.sh \
     samples/nrf24/compile_nrf24.sh
@@ -64,5 +64,6 @@ HEADERS += \
     include/core/BCD.h \
     include/abstract/FIFO.h \
     include/abstract/nec.h \
-    include/interface/i2c_soft.h
+    include/interface/i2c_soft.h \
+    include/sensors/bmp180.h
 

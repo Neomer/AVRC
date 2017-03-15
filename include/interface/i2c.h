@@ -60,7 +60,6 @@ inline void i2c_init_master(uint8_t speed, bool allow_broadcast = false, uint8_t
 {
 	TWBR = speed;
 	TWSR = 0;
-//	TWAR = (address << 1) | (allow_broadcast);
 }
 
 inline void i2c_init_slave(uint8_t speed, uint8_t address)
@@ -74,33 +73,54 @@ inline void i2c_init_slave(uint8_t speed, uint8_t address)
 
 inline uint8_t i2c_start()
 {
-	uart_send_char('S');
 	TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
     while(!(TWCR & (1<<TWINT)));
-	return TWSR;
+	uint8_t s = TWSR & I2C_STATUS_MASK;
+	if ((s != I2C_STATUS_MT_START) && (s != I2C_STATUS_MT_REPSTART))
+	{
+		uart_send_str("start error");
+	}
+	return s ;
 }
 
 inline bool i2c_open_read(uint8_t address)
 {
-	TWDR = address << 1;
+	TWDR = ((address << 1) | 1);
 	TWCR = (1<<TWINT) | (1<<TWEN); 
 	i2c_waitFlag;
+	uint8_t s = TWSR & I2C_STATUS_MASK;
+	if ((s != I2C_STATUS_MT_RX_ADR_ACK))
+	{
+		uart_send_str("i2c_open_read() error ");
+		uart_send_int(s);
+	}
 }
 
 inline bool i2c_open_write(uint8_t address)
 {
-	TWDR = ((address << 1) | 1);
+	TWDR = address << 1;
 	TWCR = (1<<TWINT) | (1<<TWEN); 
 	i2c_waitFlag;
+	uint8_t s = TWSR & I2C_STATUS_MASK;
+	if ((s != I2C_STATUS_MT_TX_ADR_ACK))
+	{
+		uart_send_str("i2c_open_write() error ");
+		uart_send_int(s);
+	}
 }
 
 inline void i2c_write_byte(uint8_t data)
 {	
-	uart_send_char('>');
-	uart_send_int(data);
+	i2c_waitFlag;
 	TWDR = data;
 	TWCR = (1<<TWINT) | (1<<TWEN); 
 	i2c_waitFlag;
+	uint8_t s = TWSR & I2C_STATUS_MASK;
+	if ((s != I2C_STATUS_MT_RX_DATA_ACK)&&(s != I2C_STATUS_MT_TX_DATA_ACK))
+	{
+		uart_send_str("data error ");
+		uart_send_int(s);
+	}
 }
 
 inline void i2c_write_array(uint8_t *data, uint8_t length)
@@ -129,7 +149,7 @@ inline void i2c_write_str(char *data)
 
 inline uint8_t i2c_read_byte( void )
 {
-	TWCR = (1<<TWINT)|(1<<TWEA)|(1<<TWEN);
+	TWCR = (1<<TWINT)|(0<<TWEA)|(1<<TWEN);
 	i2c_waitFlag;
 	return TWDR;
 }
@@ -149,7 +169,6 @@ inline void i2c_read_data(uint8_t *data, uint8_t length)
 
 inline void i2c_stop()
 {
-	uart_send_char('E');
 	TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN); 
 }
 

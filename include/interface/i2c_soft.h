@@ -14,7 +14,7 @@
 	#define I2C_SCL			1
 	#define I2C_SDA			0
 // (1 / SPEED) * 1000000
-	#define I2C_TIMEOUT		10			
+	#define I2C_TIMEOUT		10		
 #endif
 
 #define i2c_delay			_delay_us(I2C_TIMEOUT)
@@ -33,70 +33,80 @@
 
 inline void i2csoft_init_master()
 {
-	i2c_sda_rx;
-	i2c_scl_rx;
+	i2c_sda_tx;
+	i2c_scl_tx;
+	
+	i2c_sda_up;
+	i2c_scl_up;
 }
 
 inline void i2csoft_start()
 {
-	i2c_sda_tx;
+	i2c_sda_up;
+	i2c_scl_up;
+
+	i2c_delay_state;
+	
 	i2c_sda_down;
 	i2c_delay;
 	
-	i2c_scl_tx;
 	i2c_scl_down;
 	i2c_delay;
 }
 
 inline void i2csoft_stop()
 {
-	i2c_sda_tx;
-    i2c_sda_down;
+	i2c_scl_down;
+	i2c_delay;
+	i2c_sda_down;
+	i2c_delay;
+
+	i2c_scl_up;
     i2c_delay;
-	
-    i2c_scl_rx;
+
+    i2c_sda_up;
     i2c_delay;
-    i2c_sda_rx;
+	i2c_delay_state;
+	i2c_delay_state;
+	i2c_delay_state;
+	i2c_delay_state;
 }
 
 inline bool i2csoft_write_byte(uint8_t data)
 {
 	bool ret = true;
-	
+
 	for (int i = 8; i; i--)
 	{
-		if (!(data & 0x80))
+		if ((data & 0x80) == 0)
 		{
-			i2c_sda_tx;
 			i2c_sda_down;
 			i2c_delay;
+			//uart_send_char('0');
 		}
 		else
 		{
-			i2c_sda_rx;
+			i2c_sda_up;
+			i2c_delay;
+			//uart_send_char('1');
 		}
-		i2c_scl_tx; 
+	    i2c_scl_up;
+	    i2c_delay;
+		i2c_delay_state;
 	    i2c_scl_down;
 	    i2c_delay;
-	    data <<= 1; 
-	    i2c_scl_rx;
-	    i2c_delay_state;
-	    i2c_scl_tx;
-	    i2c_scl_down;
-	    i2c_delay;
+		data = data << 1;
 	}
-	i2c_scl_rx;
-    i2c_delay;
-    i2c_sda_rx;
+	i2c_sda_rx;
+	i2c_scl_up;
+	i2c_delay;
     if (bitIsHigh(I2C_PIN, I2C_SDA))
     { 
+		uart_send_char('N');
 		ret = false;
     }
-    i2c_delay; 
-    i2c_scl_tx;
-    i2c_scl_down;
-	i2c_delay_state;
-	
+	i2c_scl_down;
+	i2c_sda_tx;
 	return ret;
 }
 
@@ -104,42 +114,43 @@ inline uint8_t i2csoft_read_byte(bool ack = true)
 {
 	uint8_t ret = 0;
 
-	i2c_sda_rx; // настраиваем sda на чтение
-	for (uint8_t i = 7; i >= 0; i--) // цикл приема бит
+	i2c_sda_rx;
+	for (int8_t i = 7; i >= 0; i--) // цикл приема бит
 	{
-		i2c_scl_tx;// выдаем такт на SCL
-		i2c_scl_down;
-		i2c_delay;
-		i2c_scl_rx;
+		i2c_scl_up;
 		i2c_delay;
 		if (bitIsHigh(I2C_PIN, I2C_SDA))
 		{ 
-			setHigh(ret, i); // если считали единицу - устанавливаем соответствующий бит
-		};
+			setHigh(ret, i);
+		}
 		i2c_delay;
-		i2c_scl_tx;
 		i2c_scl_down;
 		i2c_delay;
 	};
-	if(ack==1)  //выдаем или не выдаем ACK на шину
+	i2c_sda_tx;
+	if (ack)
 	{
-		i2c_sda_tx;
 		i2c_sda_down;
 	}
 	else
 	{
-		i2c_sda_rx;
+		i2c_sda_up;
 	};
-	i2c_scl_tx;
-	i2c_scl_down;
-	i2c_delay;
-	i2c_scl_rx;
+	i2c_scl_up;
 	i2c_delay_state;
-	i2c_scl_tx;
 	i2c_scl_down;
 	i2c_delay;
 	
 	return ret;
+}
+
+inline uint8_t i2csoft_read_array(uint8_t *data, uint8_t length)
+{
+	for (int i = length; i > 1; i--)
+	{
+		*(data++) = i2csoft_read_byte();
+	}
+	*(data) = i2csoft_read_byte(false);
 }
 
 inline void i2csoft_write_array(uint8_t *data, uint8_t length)
@@ -152,6 +163,15 @@ inline void i2csoft_write_array(uint8_t *data, uint8_t length)
 	}
 }
 
+inline void i2csoft_open_read(uint8_t address)
+{
+	i2csoft_write_byte((address << 1) | 1);
+}
+
+inline bool i2csoft_open_write(uint8_t address)
+{
+	return i2csoft_write_byte(address << 1);
+}
 
 #endif // I2C_SOFT
 
