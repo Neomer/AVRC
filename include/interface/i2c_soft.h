@@ -14,7 +14,7 @@
 	#define I2C_SCL			1
 	#define I2C_SDA			0
 // (1 / SPEED) * 1000000
-	#define I2C_TIMEOUT		10		
+	#define I2C_TIMEOUT		20		
 #endif
 
 #define i2c_delay			_delay_us(I2C_TIMEOUT)
@@ -75,7 +75,9 @@ inline void i2csoft_stop()
 inline bool i2csoft_write_byte(uint8_t data)
 {
 	bool ret = true;
-
+//	uart_send_char('>');
+//	uart_send_int( data );
+	
 	for (int i = 8; i; i--)
 	{
 		if ((data & 0x80) == 0)
@@ -163,9 +165,9 @@ inline void i2csoft_write_array(uint8_t *data, uint8_t length)
 	}
 }
 
-inline void i2csoft_open_read(uint8_t address)
+inline bool i2csoft_open_read(uint8_t address)
 {
-	i2csoft_write_byte((address << 1) | 1);
+	return i2csoft_write_byte((address << 1) | 1);
 }
 
 inline bool i2csoft_open_write(uint8_t address)

@@ -44,6 +44,7 @@
 #define I2C_SPEED_4MHz_100KHz		16
 #define I2C_SPEED_4MHz_400KHz		1
 
+#define I2C_SPEED_8MHz_50KHz		72
 #define I2C_SPEED_8MHz_100KHz		32
 #define I2C_SPEED_8MHz_400KHz		2
 
@@ -64,7 +65,7 @@ inline void i2c_init_master(uint8_t speed, bool allow_broadcast = false, uint8_t
 
 inline void i2c_init_slave(uint8_t speed, uint8_t address)
 {
-	TWBR = speed;
+//	TWBR = speed;
 	TWSR = 0;
 	TWAR = address << 1;
 	TWCR = 0<<TWSTA|0<<TWSTO|1<<TWINT|1<<TWEA|1<<TWEN|1<<TWIE;

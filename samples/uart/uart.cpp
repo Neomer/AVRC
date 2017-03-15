@@ -9,7 +9,7 @@ int main( void )
 	
 	while (1)
 	{
-		uart_read_char()
+		uart_send_char('#');
 		
 		_delay_ms(500);
 	}

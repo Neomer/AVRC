@@ -24,7 +24,9 @@ SOURCES += samples/main.cpp \
     samples/i2c/i2c_uart.cpp \
     samples/i2c/slave.cpp \
     samples/i2c/master.cpp \
-    samples/i2c/interrupt.cpp
+    samples/i2c/interrupt.cpp \
+    samples/i2c/ms.cpp \
+    samples/i2c/fn.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
 	   __AVRC_INTERRUPTION_ENABLED__ /

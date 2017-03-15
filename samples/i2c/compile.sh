@@ -3,8 +3,11 @@ clear
 rm firmware.o
 rm firmware.hex
 
-echo Compiling...
-avr-gcc -mmcu=atmega8 -Os -o firmware.o i2c_uart.cpp -I ../../include
+export filename=$1
+
+
+echo Compiling $filename..
+avr-gcc -mmcu=atmega8 -Os -o firmware.o $filename.cpp -I ../../include
 avr-objcopy -O ihex firmware.o firmware.hex
 
 avr-size --mcu=atmega8 --format=avr firmware.o
