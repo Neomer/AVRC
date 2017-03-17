@@ -104,7 +104,7 @@ inline bool i2csoft_write_byte(uint8_t data)
 	i2c_delay;
     if (bitIsHigh(I2C_PIN, I2C_SDA))
     { 
-		uart_send_char('N');
+		//uart_send_char('N');
 		ret = false;
     }
 	i2c_scl_down;

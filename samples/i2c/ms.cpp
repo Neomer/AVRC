@@ -19,36 +19,32 @@ ISR(TWI_vect)
 	char s[4];
 	s[3] = 0;
 	_delay_ms(1);
-//	uart_send_char('(');
-//	uart_send_int(status);
-//	uart_send_char(')');
+
 	switch (status & I2C_STATUS_MASK)
 	{
 		case I2C_STATUS_SR_RX_ADR_ACK:/* case I2C_STATUS_SR_RX_ADR_NACK:*/
 			uart_send_str("-AW:");
 			uart_send_int( TWDR );
 			i2csoft_start();
-			if (!i2csoft_open_write(I2C_ADDRESS))
-				uart_send_char('N');				
+			i2csoft_open_write(I2C_ADDRESS);
 			break;
 		
 		case I2C_STATUS_SR_RX_DATA_ACK:/* case I2C_STATUS_SR_RX_DATA_NACK:*/
 			b = TWDR;
 			sprintf(s, " %.2X", b);
 			uart_send_str(s);
-			if (!i2csoft_write_byte(b))
-				uart_send_char('N');
+			i2csoft_write_byte(b);
 			break;
 
 		case I2C_STATUS_SR_RX_STOP_RESTART:
 			uart_send_str("E\n");
 			_delay_ms(10);
-			i2csoft_start();
-			while (!i2csoft_open_read(I2C_ADDRESS))
+			do
 			{
-				_delay_ms(10);
-				uart_send_char('N');				
+				_delay_us(5);
+				i2csoft_start();
 			}
+			while (!i2csoft_open_read(I2C_ADDRESS));
 			break;
 			
 		case I2C_STATUS_BUS_ERROR:
