@@ -26,11 +26,13 @@ SOURCES += samples/main.cpp \
     samples/i2c/master.cpp \
     samples/i2c/interrupt.cpp \
     samples/i2c/ms.cpp \
-    samples/i2c/fn.cpp
+    samples/i2c/fn.cpp \
+    samples/lcd/1602.cpp
 
 DEFINES += __AVRC_ARRAY_DONT_CONTROL_RANGE__ \ 
-	   __AVRC_INTERRUPTION_ENABLED__ /
-	   __AVR_ATmega8__ 
+	   __AVRC_INTERRUPTION_ENABLED__ \
+	   __AVR_ATtiny13__
+	   /* __AVR_ATmega8__ */ \
 
 DISTFILES += \
     samples/compile.sh \
